@@ -1,0 +1,53 @@
+.question{
+	background-color: #EEEEEE;
+	width: 645px;
+}
+.left{
+	float: left;
+	width: 100px;
+	text-align: center;
+	height: auto;
+	display: block;
+	padding-top: 5px;
+}
+.right{
+	float: left;
+	width: 539px;
+	padding: 0px;
+	margin: 0px;
+	vertical-align: top;
+	display: block;
+	line-height: 24px;
+}
+h3{
+	padding: 0px;
+	margin: 5px 0 10px 0;
+}
+.clear{
+	clear: both;
+}
+.tag {
+	margin: 15px 0;
+	width: 500px;
+}
+.tag a{
+	background-color: #E0EAF1;
+	color: #3E6D8E;
+	text-decoration: none;
+	padding: 5px;
+	font-size: 11px;
+	
+}
+.q-date{
+	float: right;
+	font-size: 11px;
+}
+.line{
+	border-top: solid 1px #CCCCCC;
+	width: 645px;
+	margin: 10px 0;
+}
+.loading{
+	text-align: center;
+	width: 645px;
+}
