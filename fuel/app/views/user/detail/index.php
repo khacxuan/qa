@@ -1,6 +1,7 @@
 <div class="question">
 	<?php 
 		$question = $replies['retval'][0]['question'];
+		$bookmark = $replies['retval'][0]['bookmark'];
 		if(count($question) > 0){ 
 	?>
 	<div class="left">
@@ -18,7 +19,10 @@
 			<a href="javascript:void(0)"><?php echo $item['name'] ?></a>
 			<?php } ?>
 		</div>
-		<div class="q-date">Date post: <?php echo date('Y-m-d',$question['created_at'])  ?></div>
+		<div class="q-date">
+			<button id="bookmark"><?php echo $bookmark == '1' ? "Remove bookmark" : "Bookmark" ?> </button>
+			Date post: <?php echo date('Y-m-d',$question['created_at'])  ?>
+		</div>
 	</div>
 	<div class="clear"></div>
 	<input type="hidden" id="qid" value="<?php echo $question['_id'] ?>" />

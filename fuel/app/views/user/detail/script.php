@@ -18,9 +18,8 @@
 					$.post(url,{question_id: qid, content: content}, function(data) {                 					
 						var response = JSON.parse(data);
 						if(response.hasOwnProperty('err_msg')){
-							if(0 == response.err_msg.length){
+							if(0 == response.err_msg.length){ 
 								$('#list-answer').append(response.new_reply);
-								$("#r-item").fadeIn("slow");
 								$('#editor1').val('');
 							}else{
 								showMessage(response.err_msg);
@@ -29,6 +28,26 @@
 						}
 					});	
 				}
+				return false;
+			});
+			
+			$('#bookmark').click(function(){
+					var url= '<?php echo Uri::create('ajax/user/bookmark'); ?>';
+					var qid = $("#qid").val();
+					$.post(url,{question_id: qid}, function(data) {                 					
+						var response = JSON.parse(data);
+						if(response.hasOwnProperty('err_msg')){
+							if(0 == response.err_msg.length){
+								if(response.flag == 0){
+									$('#bookmark').html('Bookmark');
+								}else{
+									$('#bookmark').html('Remove bookmark');
+								}
+							}else{
+								alert(response.err_msg);
+							}
+						}
+					});	
 				return false;
 			});
 			

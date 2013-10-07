@@ -4,9 +4,9 @@ use Fuel\Core\Mongo_Db;
 
 class Model_User_Detail {
 
-	static public function get_reply($question_id) {
+	static public function get_reply($question_id, $user_id) {
 		$mongodb = \Mongo_Db::instance(); 
-		//$question_id = new MongoId($question_id);
+		
 		$result = $mongodb->execute('function (){
 				var result = [];		
 				db.qa.find({_id: ObjectId("'.$question_id.'")}).forEach(function(w){
@@ -21,29 +21,34 @@ class Model_User_Detail {
 										username: username[0]["username"],
 										created_at: w.created_at
 									  } 
-					var tempreply = w.answers;
 					var replies = [];
-					tempreply.forEach(function(item){
-						var username = db.user.find(
-													{_id: item.by},
-													{username: 1}
-												   ).toArray();
-						replies.push({
-							by: item.by,
-							username: username[0]["username"],
-							content: item.content,
-							date: item.date
-						})
-					});
+					if(w.answers){
+						w.answers.forEach(function(item){
+							var username = db.user.find(
+														{_id: item.by},
+														{username: 1}
+													   ).toArray();
+							replies.push({
+								by: item.by,
+								username: username[0]["username"],
+								content: item.content,
+								date: item.date
+							})
+						});
+					}
 					
 					var tags = [];
 					if(w.tag_ids){
 						tags = db.tags.find({_id:{$in:w.tag_ids}}).toArray();
-					}			
+					}
+					
+					var bookmark = db.user.find({_id: ObjectId("'.$user_id.'"), bookmark: ObjectId("'.$question_id.'")}).count();
+								
 					result.push({
 						question: objquestion,
 						replies: replies,
-						tag: tags
+						tag: tags,
+						bookmark: bookmark
 					});
 				});
 				return result;
@@ -54,7 +59,27 @@ class Model_User_Detail {
 	static public function add_reply($question_id, $reply) {
 		$mongodb = \Mongo_Db::instance();
 		$mongodb -> where(array('_id' => new MongoId($question_id))) 
-				 -> update('qa',array('$push' => array("answers" => $reply)), array(), true);
+				 -> update('qa',array('$addToSet' => array("answers" => $reply)), array(), true);
+	}
+
+	static public function bookmark($question_id, $userid) {
+		$mongodb = \Mongo_Db::instance();
+		$flag = 0;
+		$result = $mongodb -> get_where('user', array(
+														'_id' => new MongoId($userid),
+														'bookmark' => new MongoId($question_id)
+													 )
+									   );
+		if(count($result) > 0){ //remove bookmark
+			$mongodb -> where(array('_id' => new MongoId($userid))) 
+				     -> update('user',array('$pull' => array("bookmark" => new MongoId($question_id))), array(), true);
+			$flag = 0;
+		}else{ //add bookmark
+			$flag = $mongodb -> where(array('_id' => new MongoId($userid))) 
+				     -> update('user',array('$addToSet' => array("bookmark" =>  new MongoId($question_id))), array(), true);
+			$flag = 1;
+		}
+		return $flag;
 	}
 	
 }

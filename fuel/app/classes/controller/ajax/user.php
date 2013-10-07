@@ -77,4 +77,23 @@ class Controller_Ajax_User extends Controller {
 		}
 		return json_encode($data);
 	}
+
+	public function action_bookmark() {
+		try {
+			if (Input::method() == 'POST') {
+				$user = Session::get(SESSION_QA_USER);
+				$question_id = Input::post('question_id');
+				if(!isset($question_id)){
+					$question_id = '-1';
+				}
+				$flag = Model_User_Detail::bookmark($question_id, $user['_id']);
+				$data['flag'] = $flag; 
+				$data['err_msg'] = '';
+			}
+		} catch (exception $e) {
+			$data['err_msg'] = $e->getMessage();
+			Log::error($e->getTraceAsString());
+		}
+		return json_encode($data);
+	}
 }
