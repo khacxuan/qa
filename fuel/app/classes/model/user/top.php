@@ -25,11 +25,11 @@ class Model_User_Top {
 			}else{
 				newqas = db.qa.find().sort({updated_at:-1}).limit('.$limit.').toArray();
 				newqas.forEach(function(v){
-					retF.push({fid:db.user.findOne({_id:v.questioner}), qa:v});				
+					retF.push({fid:db.user.findOne({_id:v.questioner}), qa:[v]});				
 				});				
 			}
 			
-			retI = db.qa.find({answers:{$exists: true}}).sort({"answers.date":-1}).limit('.$limit.').toArray();
+			retI = db.qa.find({_id:id, answers:{$exists: true}}).sort({"answers.date":-1}).limit('.$limit.').toArray();
 			
 			
 			return {fret: retF, iret:retI};
@@ -38,7 +38,7 @@ class Model_User_Top {
 		
 		//var_dump($re['retval']['fret']);
 		//var_dump($re['retval']['iret']);
-		
+				
 		if ($re['ok'] == 1 && !empty($re['retval'])) {
 			return array('fret'=>$re['retval']['fret'], 'iret'=>$re['retval']['iret']);
 		}
