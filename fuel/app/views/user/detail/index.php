@@ -49,7 +49,7 @@
 	<?php } ?>
 </div>
 <div id="loading" class="loading"><img src="<?php echo Uri::create('assets/img/loading.gif') ?>" alt="" /></div>
-<div style="width: 645px;">
+<div style="width: 645px;" id="i-content">
 	<div>
 		<textarea cols="80" id="editor1" name="content" rows="10"></textarea>
 		<div id="error" style="display: none;"></div>

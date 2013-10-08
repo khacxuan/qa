@@ -59,11 +59,12 @@ class Controller_Ajax_User extends Controller {
 		    			'content' => $content,
 		    			'date' => $date
 					);
-					Model_User_Detail::add_reply($question_id, $reply);
+					$msg = Model_User_Detail::add_reply($question_id, $reply);
 					$params['reply'] = array_merge($reply,array("username" => $user['username'])) ;
 					$view = View::forge('user/detail/item', $params);
 					$list = $view->render();
 					$data['new_reply'] = $list;
+					$data['date'] = $date;
 					$data['err_msg'] = '';
 				}else{
 					$data['err_msg'] =Config::get('msg_err_not_input_reply');

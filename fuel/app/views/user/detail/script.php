@@ -8,6 +8,16 @@
 			$('#editor1').ckeditor();
 			$('#loading').hide();
 			
+	        jQuery(window).bind(
+			    "beforeunload", 
+			    function() { 
+			    	var content = CKEDITOR.instances.editor1.document.getBody().getChild(0).getText();
+			    	if($.trim(content) != ""){
+			    		return true;
+			    	}
+			    }
+			)
+			
 			$('#reply').click(function(){
 				var content = CKEDITOR.instances.editor1.document.getBody().getChild(0).getText();
 				if(validate(content)){
@@ -21,6 +31,7 @@
 							if(0 == response.err_msg.length){ 
 								$('#list-answer').append(response.new_reply);
 								$('#editor1').val('');
+								$('body, html').animate({ scrollTop: $("#" + response.date).offset().top }, 800);
 							}else{
 								showMessage(response.err_msg);
 							}

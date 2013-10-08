@@ -22,7 +22,7 @@
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
 						<?php } ?>
 					</td>
-					<td><?php  echo  (@$dt['created_at']!="")?date('Y-m-d',@$dt['created_at']):""; ?></td>
+					<td><?php  echo  (@$dt['qa']['created_at']!="")?date('Y-m-d',@$dt['qa']['created_at']):""; ?></td>
 					
 				</tr>
 

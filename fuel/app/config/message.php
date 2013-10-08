@@ -14,6 +14,8 @@ return array(
 	'jsmyvalidation_unique' => '『{1}』の{0}は既に存在します。別の{0}を指定してください。',
 	'jsmyvalidation_match' => '『{0}』は『{1}』と一致していません。',
 	'qa_no_data' => 'No data',
-	'msg_err_not_input_reply' => 'Input your reply, please!'
+	'msg_err_not_input_reply' => 'Input your reply, please!',
+	'msg_remove_bookmark_sucess' => 'Remove bookmark sucess!',
+	'msg_confirm_delete' => 'Are you ready to delete ?',
 );
 

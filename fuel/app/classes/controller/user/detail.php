@@ -3,7 +3,7 @@
 class Controller_User_Detail extends Controller_Common_User {
 	
 	public function action_index($question_id) {
-		Asset::add_path('assets/ckeditor/', 'ckeditor');
+		Asset::add_path('assets/ckeditor/', 'ckeditor'); 
 		$user = Session::get(SESSION_QA_USER);
 		$question_id = isset($question_id) ? $question_id : '-1' ;
 		
