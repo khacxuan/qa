@@ -30,6 +30,8 @@ use Fuel\Core\Form;
 				<a href="<?php echo Uri::create('user/facebook');?>"><img alt="facebook" src="<?php echo Uri::base()?>assets/img/icon_facebook.png" /></a>
 				<br />
 				<a href="<?php echo Uri::create('user/twitter');?>"><img alt="twitter" src="<?php echo Uri::base()?>assets/img/icon_twitter.png" /></a>
+				<br />
+				<a href="<?php echo Uri::create('user/github');?>"><img alt="twitter" src="<?php echo Uri::base()?>assets/img/github-logo.png" /></a>
 			</td>
 		</tr>
 	</tbody>
