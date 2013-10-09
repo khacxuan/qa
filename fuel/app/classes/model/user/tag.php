@@ -46,6 +46,33 @@ class Model_User_Tag {
 
 		return $result;
 	}
+	
+	public static function getTagList($tag_id = "", $limit, $offset) {
+	
+		if ($tag_id != "") {
+			$con = '{tag_ids: ObjectId("' . $tag_id . '")}';
+		} else {
+			$con = "";
+		}
+	
+		$mdb = Mongo_DB::instance();
+		$result = $mdb->execute('function (){
+				var a = [];
+				db.qa.find(' . $con . ').skip(' . $offset . ').limit(' . $limit . ').sort( { created_at: -1 } ).forEach(function(w){
+				var b = [];
+				if(w.tag_ids){
+				b = db.tags.find({_id:{$in:w.tag_ids}}).toArray();
+	}
+				a.push({
+				qa:w,
+				tag:b
+	});
+	});
+				return a;
+	}');
+	
+		return $result;
+	}
 
 }
 ?>

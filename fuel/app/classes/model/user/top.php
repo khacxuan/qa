@@ -29,7 +29,7 @@ class Model_User_Top {
 				});				
 			}
 			
-			retI = db.qa.find({_id:id, answers:{$exists: true}}).sort({"answers.date":-1}).limit('.$limit.').toArray();
+			retI = db.qa.find({questioner:id, answers:{$exists: true}}).sort({"answers.date":-1}).limit('.$limit.').toArray();
 			
 			
 			return {fret: retF, iret:retI};
