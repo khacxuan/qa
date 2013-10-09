@@ -11,6 +11,8 @@ class Model_User_User {
 		$condition['username'] = $username;
 		if ($checkpass == TRUE) {
 			$condition['password'] = Crypt::encode($password);
+			$flag_social = Config::get('flag_social');
+			$condition['flag'] = $flag_social['none'];
 		}
 		$mongodb = Mongo_Db::instance();
 		$mongodb->where($condition);
@@ -39,8 +41,13 @@ class Model_User_User {
 		}
 		$mongodb = Mongo_Db::instance();
 		$time = time();
+		$flag_social = Config::get('flag_social');
 		$id = $mongodb->insert('user', array(
 				'username' => $data['username'],
+				'flag' => $flag_social['none'],
+				'id' => '',
+				'name' => '',
+				'token' => '',
 				'password' => Crypt::encode($data['password']),
 				'created_at' => $time,
 				'updated_at' => $time,
