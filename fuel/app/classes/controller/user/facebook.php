@@ -1,4 +1,5 @@
 <?php
+use Fuel\Core\Config;
 require_once APPPATH . 'vendor/facebook/facebook.php';
 define('FACEBOOK_PERMISSIONS', 'user_birthday,email,publish_stream');
 
@@ -55,8 +56,8 @@ class Controller_User_Facebook extends Controller {
 		} else {
 			Response::redirect('user/list');
 		}
-
-		$users = Model_User_User::is_exist(array('facebook_id' => $userInfo['id']));
+		$flag_social = Config::get('flag_social');
+		$users = Model_User_User::is_exist(array('id' => $userInfo['id'], 'flag' => $flag_social['facebook']));
 
 		$access_token = $this -> _facebook -> getAccessToken();
 		//ユーザーが存在しない
@@ -68,12 +69,13 @@ class Controller_User_Facebook extends Controller {
 												'query' => $fql,
 											));
 			$time = time();
+
 			$userfb = array(
 				'username' => $userInfo['email'],
-				'facebook_flag' => 1,
-				'facebook_id' => $userInfo['id'],
-				'facebook_user_name' => isset($userInfo['username']) ? $userInfo['username'] : '',
-				'facebook_token' => $access_token,
+				'flag' => $flag_social['facebook'],
+				'id' => $userInfo['id'],
+				'name' => isset($userInfo['username']) ? $userInfo['username'] : '',
+				'token' => $access_token,
 				'password' => '',
 				'created_at' => $time,
 				'updated_at' => $time,
@@ -84,9 +86,9 @@ class Controller_User_Facebook extends Controller {
 			if ($user == FALSE) {
 				Response::redirect('user/login');
 			}
-			$users = Model_User_User::is_exist(array('_id' => $user));
+			$users = Model_User_User::is_exist(array('_id' => $user, 'flag' => $flag_social['facebook']));
 		} else {
-			$entry = Model_User_User::updateFB(array('_id' => $users[0]['_id']), array('facebook_token' => $access_token));
+			$entry = Model_User_User::updateFB(array('_id' => $users[0]['_id']), array('token' => $access_token));
 			if ($entry == FALSE) {
 				Response::redirect('user/login');
 			}
