@@ -11,8 +11,8 @@ class Model_User_User {
 		$condition['username'] = $username;
 		if ($checkpass == TRUE) {
 			$condition['password'] = Crypt::encode($password);
-			$flag_social = Config::get('flag_social');
-			$condition['flag'] = $flag_social['none'];
+			//$flag_social = Config::get('flag_social');
+			//$condition['flag'] = $flag_social['none'];
 		}
 		$mongodb = Mongo_Db::instance();
 		$mongodb->where($condition);
