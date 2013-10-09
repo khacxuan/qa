@@ -21,6 +21,7 @@
 	</div>
 </form>
 <!-- END search form -->
+<a href="<?php echo Uri::create('user/newqa') ?>">質問を追加</a>
 <?php if ($data['ok']==1&& !empty($data['retval'])) {  ?>
 	<table class="table table-bordered table-data admin-com-index" border="1">
 		<tbody><tr>
