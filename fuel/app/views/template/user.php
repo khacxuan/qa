@@ -22,6 +22,15 @@
 		<?php echo isset($script_file) ? render($script_file) : "" ?>
 	</head>
 	<body>
+		<div class="menu">
+			<ul>
+				<li><a href="<?php echo Uri::create('user/top') ?>">Top</a></li>
+				<li><a href="<?php echo Uri::create('user/list') ?>">質問一覧</a></li>
+				<li><a href="<?php echo Uri::create('user/listuser') ?>">ユーザー一覧</a></li>
+				<li><a href="<?php echo Uri::create('user/bookmark') ?>">お気に入り一覧</a></li>
+				<li><a href="<?php echo Uri::create('user/logout') ?>">ログアウト</a></li>
+			</ul>
+		</div>
 		<div id="wrapper">
 			<div id="content">
 				<?php echo $content; ?>
