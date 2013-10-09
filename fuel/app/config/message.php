@@ -17,5 +17,6 @@ return array(
 	'msg_err_not_input_reply' => 'Input your reply, please!',
 	'msg_remove_bookmark_sucess' => 'Remove bookmark sucess!',
 	'msg_confirm_delete' => 'Are you ready to delete ?',
+	'msg_err' => 'Error'
 );
 

@@ -1,8 +1,11 @@
+<?php
+use Fuel\Core\Config;
+?>
 <div id="follow">
 	<?php if ($followed == FALSE) :?>
 		<button type="button" onClick="follow('<?php echo (string)$userdetail['_id'];?>'); return false;">Follow</button></div>
 	<?php else : ?>
-		Followed
+		<button type="button" onClick="unfollow('<?php echo (string)$userdetail['_id'];?>'); return false;">UnFollow</button></div>
 	<?php endif;?>
 <table>
 	<tr>
@@ -25,12 +28,28 @@
 			type: 'POST',
 			data: {'id': id},
 			dataType: 'json',
-			success: function(res) {console.log(res);
+			success: function(res) {
 				if (res == false) {
-					alert('h');
+					alert('<?php echo Config::get('msg_err')?>');
 				}
 				else {
-					$('#follow').text('Followed');
+					$('#follow').html('<button type="button" onClick="unfollow(\'<?php echo (string)$userdetail['_id'];?>\'); return false;">UnFollow</button></div>');
+				}
+			}
+		});
+	}
+	function unfollow(id) {
+		$.ajax({
+			url:'<?php echo Uri::create('ajax/user/unFollowUser'); ?>',
+			type: 'POST',
+			data: {'id': id},
+			dataType: 'json',
+			success: function(res) {
+				if (res == false) {
+					alert('<?php echo Config::get('msg_err')?>');
+				}
+				else {
+					$('#follow').html('<button type="button" onClick="follow(\'<?php echo (string)$userdetail['_id'];?>\'); return false;">Follow</button></div>');
 				}
 			}
 		});

@@ -172,6 +172,28 @@ class Model_User_User {
 		return FALSE;
 	}
 
+	/*
+	 * return Boolean
+	*/
+	public static function removeFollow($id = 0, $userFollow = 0) {
+		if (empty($id) || empty($userFollow)){
+			return FALSE;
+		}
+		$check = self::getUserById($userFollow);
+		if (empty($check)) {
+			return FALSE;
+		}
+		$mongodb = Mongo_Db::instance();
+		$collection = $mongodb->get_collection('user');
+		$re = $collection->update(array('_id' => $id),
+				array('$pull' => array('follow' => new MongoId($userFollow)))
+		);
+		if ($re == true) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
 	public static function getCountQuestionAndAnswer($id = 0) {
 		$arr = array();
 		if (empty($id)){

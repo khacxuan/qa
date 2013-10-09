@@ -40,7 +40,24 @@ class Controller_Ajax_User extends Controller {
 		}
 		return json_encode(false);
 	}
-	
+
+	public function action_unFollowUser() {
+		if (Input::method() == 'POST') {
+			$user = Session::get(SESSION_QA_USER);
+			$id = $user['_id'];
+			$userFollow = Input::post('id', '');
+			if (!empty($userFollow)) {
+				if (count(Model_User_User::getUserById($userFollow)) > 0) {
+					$result = Model_User_User::removeFollow($id, $userFollow);
+					if ($result == TRUE) {
+						return json_encode(true);
+					}
+				}
+			}
+		}
+		return json_encode(false);
+	}
+
 	public function action_add_reply() {
 		try {
 			if (Input::method() == 'POST') {
@@ -56,8 +73,8 @@ class Controller_Ajax_User extends Controller {
 					}
 					$reply = array(
 						'by' => new MongoId($user['_id']),
-		    			'content' => $content,
-		    			'date' => $date
+							'content' => $content,
+							'date' => $date
 					);
 					$msg = Model_User_Detail::add_reply($question_id, $reply);
 					$params['reply'] = array_merge($reply,array("username" => $user['username'])) ;
@@ -88,7 +105,7 @@ class Controller_Ajax_User extends Controller {
 					$question_id = '-1';
 				}
 				$flag = Model_User_Detail::bookmark($question_id, $user['_id']);
-				$data['flag'] = $flag; 
+				$data['flag'] = $flag;
 				$data['err_msg'] = '';
 			}
 		} catch (exception $e) {
