@@ -5,13 +5,26 @@ use Fuel\Core\Crypt;
 
 class Model_User_List {
 
-	public static function getAllListQuestions($key = "") {		
+	public static function getAllListQuestions($key = "",$answer=-1) {		
 		if ($key != "") {
 			$key = str_replace(" ","|" ,$key);
 			$key = str_replace("　","|" ,$key);	
-			$con = '{$or:[{question_content:{ $regex: "'.$key.'",$options: "im"}},{question_title:{ $regex: "'.$key.'",$options: "im"}}]}';
+			if($answer ==-1){
+				$con = '{$or:[{question_content:{ $regex: "'.$key.'",$options: "im"}},{question_title:{ $regex: "'.$key.'",$options: "im"}}]}';
+			} else if($answer==0){
+				$con = '{$and[{answers:{ $exists: false}},{$or:[{question_content:{ $regex: "'.$key.'",$options: "im"}},{question_title:{ $regex: "'.$key.'",$options: "im"}}]}]}';
+			}else{
+				$con = '{$and[{answers:{ $exists: true}},{$or:[{question_content:{ $regex: "'.$key.'",$options: "im"}},{question_title:{ $regex: "'.$key.'",$options: "im"}}]}]}';
+			}
 		} else {
 			$con = "";
+			if($answer ==-1){
+				$con = "";
+			} else if($answer==0){
+				$con = '{answers:{ $exists: false}}';
+			}else{
+				$con = '{answers:{ $exists: true}}';
+			}
 		}
 
 		$mdb = Mongo_DB::instance();		
@@ -26,15 +39,29 @@ class Model_User_List {
 	}
 	
 
-	public static function getAllListQuestoinsByCon($key = "", $limit, $offset) {
+	public static function getAllListQuestoinsByCon($key = "",$answer=-1, $limit, $offset) {
 		
 		if ($key != "") {
 			$key = preg_quote($key);
 			$key = str_replace(" ","|" ,$key);
-			$key = str_replace("　","|" ,$key);	
-			$con = '{$or:[{question_content:{ $regex: "'.$key.'",$options: "im"}},{question_title:{ $regex: "'.$key.'",$options: "im"}}]}';
+			$key = str_replace("　","|" ,$key);
+			if($answer ==-1){
+				$con = '{$or:[{question_content:{ $regex: "'.$key.'",$options: "im"}},{question_title:{ $regex: "'.$key.'",$options: "im"}}]}';
+			} else if($answer==0){
+				$con = '{$and[{answers:{ $exists: false}},{$or:[{question_content:{ $regex: "'.$key.'",$options: "im"}},{question_title:{ $regex: "'.$key.'",$options: "im"}}]}]}';
+			}else{
+				$con = '{$and[{answers:{ $exists: true}},{$or:[{question_content:{ $regex: "'.$key.'",$options: "im"}},{question_title:{ $regex: "'.$key.'",$options: "im"}}]}]}';
+			}
+			
 		} else {
 			$con = "";
+			if($answer ==-1){
+				$con = "";
+			} else if($answer==0){
+				$con = '{answers:{ $exists: false}}';
+			}else{
+				$con = '{answers:{ $exists: true}}';
+			}
 		}
 
 		$mdb = Mongo_DB::instance();		

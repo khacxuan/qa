@@ -11,6 +11,15 @@
 					</td>
 
 				</tr>
+				<tr>
+					<th>Option</th>
+					<td>						
+						<input type="radio" name="answer" value="-1" <?php if(!isset($_GET['answer'])||$_GET['answer']==-1) echo "checked"; ?>>All
+						<input type="radio" name="answer" value="1" <?php if(isset($_GET['answer'])&&$_GET['answer']==1) echo "checked"; ?> >Answered
+						<input type="radio" name="answer" value="0" <?php if(isset($_GET['answer'])&&$_GET['answer']==0) echo "checked"; ?>>Not answer						
+					</td>
+
+				</tr>
 				<tr>					
 					<td colspan="2">
 						<button class="btn medium primary"><i class="icon-search"></i> 検索する</button>

@@ -4,7 +4,8 @@ class Controller_User_List extends Controller_Common_User {
 	public function action_index() {			
 		$view = View::forge('user/list/index');
 		$key = trim(Input::get('key')," 　\t\n\r\0\x0B");
-		$data =  Model_User_List::getAllListQuestions($key);				
+		$answer = trim(Input::get('answer')," 　\t\n\r\0\x0B");
+		$data =  Model_User_List::getAllListQuestions($key,$answer);				
 		$get = Input::get();
 		unset($get['page']);
 		$requestString = trim(http_build_query($get));
@@ -28,7 +29,7 @@ class Controller_User_List extends Controller_Common_User {
 		if ($page_to > $Total) {
 			$page_to = $Total;
 		}
-		$data =  Model_User_List::getAllListQuestoinsByCon($key,$page_record_total,$offset);	
+		$data =  Model_User_List::getAllListQuestoinsByCon($key,$answer,$page_record_total,$offset);	
 		$view->page_from = $page_from;
 		$view->page_to = $page_to;
 		$view->students_count = $Total;
