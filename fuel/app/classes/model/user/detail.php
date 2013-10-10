@@ -85,7 +85,7 @@ class Model_User_Detail {
 	static public function increase_views($question_id) {
 		$mongodb = \Mongo_Db::instance();
 		$mongodb -> where(array('_id' => new MongoId($question_id))) 
-				 -> update('qa',array('$inc' => array("views" => 1)), array(), true);
+				 -> update('qa',array('$inc' => array("views" => 1)), array(), true); 
 	}
 	
 }

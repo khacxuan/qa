@@ -15,6 +15,6 @@ class Controller_User_Detail extends Controller_Common_User {
 		}
 		$data['replies'] = $replies;
 		$this->template->content = View::forge('user/detail/index', $data);
-		$this->template->script_file = 'user/detail/script';
+		$this->template->script_file = 'user/detail/script'; 
 	}
 }
