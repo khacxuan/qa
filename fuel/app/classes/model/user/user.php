@@ -11,8 +11,8 @@ class Model_User_User {
 		$condition['username'] = $username;
 		if ($checkpass == TRUE) {
 			$condition['password'] = Crypt::encode($password);
-			$flag_social = Config::get('flag_social');
-			$condition['flag'] = $flag_social['none'];
+			//$flag_social = Config::get('flag_social');
+			//$condition['flag'] = $flag_social['none'];
 		}
 		$mongodb = Mongo_Db::instance();
 		$mongodb->where($condition);
@@ -166,6 +166,28 @@ class Model_User_User {
 		$re = $collection->update(array('_id' => $id),
 								array('$addToSet' => array('follow' => new MongoId($userFollow)))
 							);
+		if ($re == true) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	/*
+	 * return Boolean
+	*/
+	public static function removeFollow($id = 0, $userFollow = 0) {
+		if (empty($id) || empty($userFollow)){
+			return FALSE;
+		}
+		$check = self::getUserById($userFollow);
+		if (empty($check)) {
+			return FALSE;
+		}
+		$mongodb = Mongo_Db::instance();
+		$collection = $mongodb->get_collection('user');
+		$re = $collection->update(array('_id' => $id),
+				array('$pull' => array('follow' => new MongoId($userFollow)))
+		);
 		if ($re == true) {
 			return TRUE;
 		}

@@ -23,12 +23,15 @@ use Fuel\Core\Form;
 		<tr>
 			<td></td>
 			<td>
-				<?php echo Form::input('confirm','confirm', array('type' => 'submit'));?>
+				<?php echo Form::input('confirm','confirm', array('type' => 'submit'));?><br />
+				<a href="<?php echo Uri::create('user/register')?>">会員登録</a><br />
 				<br />
 				<br />
 				<a href="<?php echo Uri::create('user/facebook');?>"><img alt="facebook" src="<?php echo Uri::base()?>assets/img/icon_facebook.png" /></a>
 				<br />
 				<a href="<?php echo Uri::create('user/twitter');?>"><img alt="twitter" src="<?php echo Uri::base()?>assets/img/icon_twitter.png" /></a>
+				<br />
+				<a href="<?php echo Uri::create('user/github');?>"><img alt="twitter" src="<?php echo Uri::base()?>assets/img/github-logo.png" /></a>
 			</td>
 		</tr>
 	</tbody>
