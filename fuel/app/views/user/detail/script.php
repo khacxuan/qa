@@ -25,6 +25,7 @@
 					var url= '<?php echo Uri::create('ajax/user/add_reply'); ?>';
 					var content = $('#editor1').val();
 					var qid = $("#qid").val();
+					var email = $("#email").val();
 					$.post(url,{question_id: qid, content: content}, function(data) {                 					
 						var response = JSON.parse(data);
 						if(response.hasOwnProperty('err_msg')){
@@ -32,6 +33,12 @@
 								$('#list-answer').append(response.new_reply);
 								$('#editor1').val('');
 								$('body, html').animate({ scrollTop: $("#" + response.date).offset().top }, 800);
+								
+								//send mail
+								if(email != ""){
+									url= '<?php echo Uri::create('ajax/user/sendmail'); ?>'; 
+									$.post(url,{email: email, reply: content}, function() {});	
+								}
 							}else{
 								showMessage(response.err_msg);
 							}

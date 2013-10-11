@@ -114,4 +114,23 @@ class Controller_Ajax_User extends Controller {
 		}
 		return json_encode($data);
 	}
+	
+	public function action_sendmail() {
+		try {
+			if (Input::method() == 'POST') {
+				$mail_to = Input::post('email');
+				if($mail_to != ""){
+					$data['reply'] = Input::post('reply');
+					$subject = 'New reply';
+					$body = View::forge('mail/template_send_new_reply', $data);
+					\Helper\Utilities::send_mail($mail_to, "", $subject, $body,null,array(),true);
+				}
+			}
+		} catch (exception $e) {
+			$data['err_msg'] = $e->getMessage();
+			Log::error($e->getTraceAsString());
+		}
+	}
+	
+	
 }

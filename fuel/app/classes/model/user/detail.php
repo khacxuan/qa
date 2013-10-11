@@ -12,13 +12,15 @@ class Model_User_Detail {
 				db.qa.find({_id: ObjectId("'.$question_id.'")}).forEach(function(w){
 					var username = db.user.find(
 												{_id: w.questioner},
-												{username: 1}
+												{username: 1, email: 1, send_mail: 1}
 											   ).toArray();
 					var objquestion = {
 										_id: w._id, 
 										question_title: w.question_title, 
 										question_content: w.question_content, 
 										username: username[0]["username"],
+										email: username[0]["email"],
+										send_mail: username[0]["send_mail"],
 										created_at: w.created_at
 									  } 
 					var replies = [];

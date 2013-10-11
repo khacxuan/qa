@@ -81,6 +81,10 @@ return array(
 	'language'           => 'ja', // Default language
 	'language_fallback'  => 'en', // Fallback language when file isn't available for default language
 	'locale'             => 'ja_JP.UTF-8', // PHP set_locale() setting, null to not set
+	
+	'module_paths' => array(
+        APPPATH.'modules'.DS
+    ),
 
 	/**
 	 * Internal string encoding charset
@@ -270,9 +274,10 @@ return array(
 		 *     array('auth'	=> PKGPATH.'auth/')
 		 * );
 		 */
-		// 'packages'  => array(
-		// 	//'orm',
-		// ),
+		 'packages'  => array(
+		 	//'orm',
+		 	'email'
+		 ),
 
 		/**
 		 * These modules are always loaded on Fuel's startup. You can specify them
@@ -283,6 +288,7 @@ return array(
 		 * A path must be set in module_paths for this to work.
 		 */
 		// 'modules'  => array(),
+		'modules'  => array('helper'),
 
 		/**
 		 * Classes to autoload & initialize even when not used

@@ -26,6 +26,7 @@
 	</div>
 	<div class="clear"></div>
 	<input type="hidden" id="qid" value="<?php echo $question['_id'] ?>" />
+	<input type="hidden" id="email" value="<?php echo (isset($question['send_email']) && $question['send_email'] ==1 ? $question['email'] : '') ?>" />
 	<?php } ?>
 </div>
 <div class="line"></div>
