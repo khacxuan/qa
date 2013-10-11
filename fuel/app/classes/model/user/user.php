@@ -44,6 +44,7 @@ class Model_User_User {
 		$flag_social = Config::get('flag_social');
 		$id = $mongodb->insert('user', array(
 				'username' => $data['username'],
+				'email' => '',
 				'flag' => $flag_social['none'],
 				'id' => '',
 				'name' => '',

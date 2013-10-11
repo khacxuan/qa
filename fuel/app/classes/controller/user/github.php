@@ -47,20 +47,20 @@ class Controller_User_Github extends Controller {
 	 * 招待を受ける
 	 */
 	private function firstRegister($userInfo) {
-
 		$user = Session::get(SESSION_QA_USER);
 		if (((!isset($user)))) {
 		} else {
 			Response::redirect('user/list');
 		}
 		$flag_social = Config::get('flag_social');
-		$users = Model_User_User::is_exist(array('id' => $userInfo->id, 'flag' => $flag_social['github']));
+		$users = Model_User_User::is_exist(array('id' => ''.$userInfo->id, 'flag' => $flag_social['github']));
 
 		if (empty($users) or count($users) <= 0) {
 
 			$time = time();
 			$usergh = array(
-				'username' => $userInfo->email,
+				'username' => $userInfo->login,
+				'email' => $userInfo->email,
 				'flag' => $flag_social['github'],
 				'id' => ''.$userInfo->id,
 				'name' => isset($userInfo->name) ? $userInfo->name : '',

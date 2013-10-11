@@ -73,6 +73,7 @@ class Controller_User_Twitter extends Controller {
 			$time = time();
 			$usertwitter = array(
 				'username' => $userT->screen_name,
+				'email' => '',
 				'flag' => $flag_social['twitter'],
 				'id' => $userT->id_str,
 				'name' => isset($userT->name) ? $userT->name : '',

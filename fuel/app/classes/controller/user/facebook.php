@@ -71,10 +71,11 @@ class Controller_User_Facebook extends Controller {
 			$time = time();
 
 			$userfb = array(
-				'username' => $userInfo['email'],
+				'username' => $userInfo['username'],
+				'email' => $userInfo['email'],
 				'flag' => $flag_social['facebook'],
 				'id' => $userInfo['id'],
-				'name' => isset($userInfo['username']) ? $userInfo['username'] : '',
+				'name' => (isset($ret_obj[0]['name']) ? $ret_obj[0]['name'] : ''),
 				'token' => $access_token,
 				'password' => '',
 				'created_at' => $time,
