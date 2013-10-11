@@ -58,6 +58,43 @@ class Model_User_User {
 		}
 		return TRUE;
 	}
+
+	/*
+	 * return Boolean
+	*/
+	public static function updateUser($data = array()) {
+
+		if (empty($data)){
+			return FALSE;
+		}
+
+		if (!isset($data['name']) && !isset($data['email'])) {
+			return FALSE;
+		}
+
+		if (empty($data['name']) && empty($data['email'])) {
+			return FALSE;
+		}
+
+		$time = time();
+		$updatedata = array(
+								'name' => $data['name'] ,
+								'email' => $data['email'],
+								'updated_at' => $time
+							);
+
+		if (!empty($data['password'])) {
+			$updatedata['password'] = Crypt::encode($data['password']);
+		}
+
+		$mongodb = Mongo_Db::instance();
+		$id = $mongodb->where(array('_id' => $data['id']))->update('user', $updatedata);
+		if ($id == true) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
 	/*
 	 * return Boolean
 	*/
@@ -111,7 +148,7 @@ class Model_User_User {
 			return $arr_re;
 		}
 		$mongodb = Mongo_Db::instance();
-		$mongodb->select(array('username'));
+		$mongodb->select();
 		$mongodb->where($arr);
 		$users = $mongodb->get('user');
 		return $users;
