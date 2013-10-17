@@ -33,21 +33,28 @@
 <div class="answer" id="list-answer">
 	<?php 
 		$replies = $replies['retval'][0]['replies'];
+		$i = 0;
 		foreach ($replies as $item) {
 	?>
 	<div>
 	<div class="left">
 		<img src="<?php echo Uri::create("assets/img/s_1314188084.jpg") ?>" alt=""/><br />
-		<span><a href="javascript:void(0)"><?php echo $item['username'] ?></a></span>
+		<span><a href="javascript:void(0)"><?php echo $item['username'] ?></a></span><br />
+		better answers: <span id="<?php echo 'counter'.$i ?>"><?php echo $item['count_better'] ?></span>
 	</div>
 	<div class="right">
 		<div><?php echo $item['content'] ?></div>
-		<div class="q-date">Date reply: <?php echo date('Y-m-d',$item['date'])  ?></div>
+		<div class="q-date">
+			<?php if($login_id == $question['questioner'] && $item['better_flag'] != 1) { ?>
+				<button id="<?php echo 'better_'.$i ?>">Very good</button>
+			<?php } ?>
+			Date reply: <?php echo date('Y-m-d',$item['date']); ?>
+		</div>
 	</div>
 	</div>
 	<div class="clear"></div>
 	<div class="line"></div>
-	<?php } ?>
+	<?php $i++; } ?>
 </div>
 <div id="loading" class="loading"><img src="<?php echo Uri::create('assets/img/loading.gif') ?>" alt="" /></div>
 <div style="width: 645px;" id="i-content">

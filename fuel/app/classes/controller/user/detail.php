@@ -14,6 +14,7 @@ class Controller_User_Detail extends Controller_Common_User {
 			Response::redirect(Uri::create('user/list'));
 		}
 		$data['replies'] = $replies;
+		$data['login_id'] = strval($this -> user_id['_id']);
 		$this->template->content = View::forge('user/detail/index', $data);
 		$this->template->script_file = 'user/detail/script'; 
 	}

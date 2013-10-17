@@ -132,5 +132,28 @@ class Controller_Ajax_User extends Controller {
 		}
 	}
 	
+	public function action_set_better() {
+		try {
+			if (Input::method() == 'POST') {
+				$user = Session::get(SESSION_QA_USER);
+				$question_id = Input::post('question_id');
+				$index = Input::post('index');
+				if(!isset($question_id)){
+					$question_id = '-1';
+				}
+				if(!isset($index)){
+					$index = '-1';
+				}
+				$flag = Model_User_Detail::set_better($question_id, $user['_id'], $index);
+				$data['err_msg'] = '';
+				$data['success'] = $flag;
+			}
+		} catch (exception $e) {
+			$data['err_msg'] = $e->getMessage();
+			Log::error($e->getTraceAsString());
+		}
+		return json_encode($data);
+	}
+	
 	
 }

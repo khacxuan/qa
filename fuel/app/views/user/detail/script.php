@@ -83,6 +83,34 @@
 				$("#error").fadeIn("slow");
 			}
 			
+			$("button[id^=better]").click(function(){
+					var url= '<?php echo Uri::create('ajax/user/set_better'); ?>';
+					var qid = $("#qid").val();
+					var id = this.id.split('_');
+					var index = -1;
+					if(id[1] != null){
+						index = id[1]; 
+					}
+					$.post(url,{question_id: qid, index: index}, function(data) {                 					
+						var response = JSON.parse(data);
+						if(response.hasOwnProperty('err_msg')){
+							if(0 == response.err_msg.length){
+								if(response.success == true){
+									var v = $("#counter" + index).text();
+									if(v == "" || v == null){
+										v = 0;
+									}
+									$("#counter" + index).text(++v);
+									$("#better_" + index).attr("disabled", "disabled");
+								}
+							}else{
+								alert(response.err_msg);
+							}
+						}
+					});	
+				return false;
+			});
+			
 		});
 
 </script>

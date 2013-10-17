@@ -21,7 +21,8 @@ class Model_User_Detail {
 										username: username[0]["username"],
 										email: username[0]["email"],
 										send_mail: username[0]["send_mail"],
-										created_at: w.created_at
+										created_at: w.created_at,
+										questioner: w.questioner
 									  } 
 					var replies = [];
 					if(w.answers){
@@ -30,11 +31,23 @@ class Model_User_Detail {
 														{_id: item.by},
 														{username: 1}
 													   ).toArray();
+					   
+							var count_better = 0; 
+							db.qa.find({answers: {$elemMatch: {by: item.by, better_flag: 1}}}).forEach(function(c){
+								c.answers.forEach(function(item){
+									if(item.better_flag == 1){
+										count_better = count_better + 1;
+									}
+								});
+							});
+							
 							replies.push({
 								by: item.by,
 								username: username[0]["username"],
 								content: item.content,
-								date: item.date
+								date: item.date,
+								count_better: count_better,
+								better_flag: item.better_flag
 							})
 						});
 					}
@@ -88,6 +101,17 @@ class Model_User_Detail {
 		$mongodb = \Mongo_Db::instance();
 		$mongodb -> where(array('_id' => new MongoId($question_id))) 
 				 -> update('qa',array('$inc' => array("views" => 1)), array(), true); 
+	}
+	
+	static public function set_better($question_id, $loginid, $index) {
+		$mongodb = \Mongo_Db::instance();
+		return $mongodb -> where(
+									array(
+											'_id' => new MongoId($question_id), 
+											'questioner' => new MongoId($loginid)
+										 )
+						   ) 
+				 -> update('qa',array('$set' => array("answers.$index.better_flag" => 1)), array(), true);
 	}
 	
 }
