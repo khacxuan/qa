@@ -25,6 +25,7 @@ class Model_User_Detail {
 										questioner: w.questioner
 									  } 
 					var replies = [];
+					var better_flag = "";
 					if(w.answers){
 						w.answers.forEach(function(item){
 							var username = db.user.find(
@@ -40,6 +41,10 @@ class Model_User_Detail {
 									}
 								});
 							});
+							
+							if(item.better_flag == 1){
+								better_flag = 1;
+							}
 							
 							replies.push({
 								by: item.by,
@@ -63,7 +68,8 @@ class Model_User_Detail {
 						question: objquestion,
 						replies: replies,
 						tag: tags,
-						bookmark: bookmark
+						bookmark: bookmark,
+						better_flag: better_flag
 					});
 				});
 				return result;
@@ -75,6 +81,29 @@ class Model_User_Detail {
 		$mongodb = \Mongo_Db::instance();
 		$mongodb -> where(array('_id' => new MongoId($question_id))) 
 				 -> update('qa',array('$addToSet' => array("answers" => $reply)), array(), true);
+	}
+
+	public static function get_info($by, $question_id){
+		$mongodb = \Mongo_Db::instance();
+		$result = $mongodb->execute('function (){
+				var count_better = 0;
+				var questioner = [];
+				var result = [];
+				db.qa.find({answers: {$elemMatch: {by: ObjectId("'.$by.'"), better_flag: 1}}}).forEach(function(c){
+					c.answers.forEach(function(item){
+						if(item.better_flag == 1){
+							count_better = count_better + 1;
+						}
+					});
+				});
+				questioner = db.qa.find({_id : ObjectId("'.$question_id.'"), questioner : ObjectId("'.$by.'") }).count();
+				result.push({
+					count_better: count_better,
+					questioner: questioner
+				});
+				return result;
+			}');		
+		return $result;
 	}
 
 	static public function bookmark($question_id, $userid) {

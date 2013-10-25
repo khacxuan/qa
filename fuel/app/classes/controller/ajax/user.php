@@ -67,7 +67,9 @@ class Controller_Ajax_User extends Controller {
 					$user = Session::get(SESSION_QA_USER);
 					$question_id = Input::post('question_id');
 					$content = Input::post('content');
+					$better_flag = Input::post('better_flag');
 					$date = time();
+					$show_button = false;
 					if(!isset($question_id)){
 						$question_id = '-1';
 					}
@@ -77,7 +79,14 @@ class Controller_Ajax_User extends Controller {
 							'date' => $date
 					);
 					$msg = Model_User_Detail::add_reply($question_id, $reply);
-					$params['reply'] = array_merge($reply,array("username" => $user['username'])) ;
+					$info = Model_User_Detail::get_info(new MongoId($user['_id']), $question_id);
+					if($info['retval'][0]['questioner'] != 0 && $better_flag != 1){
+						$show_button = true;
+					}
+					$params['reply'] = array_merge($reply,array("username" => $user['username']));
+					$params['show_button'] = $show_button;
+					$params['count_better'] = $info['retval'][0]['count_better'];
+					
 					$view = View::forge('user/detail/item', $params);
 					$list = $view->render();
 					$data['new_reply'] = $list;

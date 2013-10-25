@@ -26,14 +26,14 @@
 					var content = $('#editor1').val();
 					var qid = $("#qid").val();
 					var email = $("#email").val();
-					$.post(url,{question_id: qid, content: content}, function(data) {                 					
+					var better_flag = $("#better_flag").val();
+					$.post(url,{question_id: qid, content: content, better_flag: better_flag}, function(data) {                 					
 						var response = JSON.parse(data);
 						if(response.hasOwnProperty('err_msg')){
 							if(0 == response.err_msg.length){ 
 								$('#list-answer').append(response.new_reply);
 								$('#editor1').val('');
 								$('body, html').animate({ scrollTop: $("#" + response.date).offset().top }, 800);
-								
 								//send mail
 								if(email != ""){
 									url= '<?php echo Uri::create('ajax/user/sendmail'); ?>'; 
@@ -87,6 +87,7 @@
 					var url= '<?php echo Uri::create('ajax/user/set_better'); ?>';
 					var qid = $("#qid").val();
 					var id = this.id.split('_');
+					var by = this.name.split('_'); 
 					var index = -1;
 					if(id[1] != null){
 						index = id[1]; 
@@ -96,12 +97,13 @@
 						if(response.hasOwnProperty('err_msg')){
 							if(0 == response.err_msg.length){
 								if(response.success == true){
-									var v = $("#counter" + index).text();
+									var v = $("[name=counter_" + by[2] + "]").first().text(); alert(v);
 									if(v == "" || v == null){
 										v = 0;
 									}
-									$("#counter" + index).text(++v);
-									$("#better_" + index).attr("disabled", "disabled");
+									$("[name=counter_" + by[2] + "]").text(++v);
+									$("button[name^=btn_better_]").remove();
+									$("#better_img_" + index).prepend('<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />');
 								}
 							}else{
 								alert(response.err_msg);

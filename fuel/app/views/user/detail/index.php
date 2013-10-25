@@ -32,29 +32,36 @@
 <div class="line"></div>
 <div class="answer" id="list-answer">
 	<?php 
-		$replies = $replies['retval'][0]['replies'];
+		$reply = $replies['retval'][0]['replies'];
+		$better_flag = $replies['retval'][0]['better_flag'];
 		$i = 0;
-		foreach ($replies as $item) {
+		foreach ($reply as $item) {
 	?>
 	<div>
 	<div class="left">
 		<img src="<?php echo Uri::create("assets/img/s_1314188084.jpg") ?>" alt=""/><br />
 		<span><a href="javascript:void(0)"><?php echo $item['username'] ?></a></span><br />
-		better answers: <span id="<?php echo 'counter'.$i ?>"><?php echo $item['count_better'] ?></span>
+		good: <span name="<?php echo 'counter_'.$item['by'] ?>"><?php echo $item['count_better'] ?></span>
 	</div>
 	<div class="right">
 		<div><?php echo $item['content'] ?></div>
 		<div class="q-date">
-			<?php if($login_id == $question['questioner'] && $item['better_flag'] != 1) { ?>
-				<button id="<?php echo 'better_'.$i ?>">Very good</button>
+			<?php if($login_id == $question['questioner'] && $item['better_flag'] != 1 && $better_flag != 1 ) { ?>
+				<button id="<?php echo 'better_'.$i ?>" name="<?php echo 'btn_better_'.$item['by'] ?>">Very good</button>
 			<?php } ?>
 			Date reply: <?php echo date('Y-m-d',$item['date']); ?>
+			<span id="<?php echo 'better_img_'.$i ?>">
+				<?php if($item['better_flag'] == 1) { ?>
+					<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />
+				<?php } ?>
+			</span>
 		</div>
 	</div>
 	</div>
 	<div class="clear"></div>
 	<div class="line"></div>
 	<?php $i++; } ?>
+	<input type="hidden" id="better_flag" value="<?php echo $better_flag ?>" />
 </div>
 <div id="loading" class="loading"><img src="<?php echo Uri::create('assets/img/loading.gif') ?>" alt="" /></div>
 <div style="width: 645px;" id="i-content">
