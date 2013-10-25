@@ -5,6 +5,7 @@ class Controller_User_List extends Controller_Common_User {
 		$view = View::forge('user/list/index');
 		$key = trim(Input::get('key')," 　\t\n\r\0\x0B");
 		$answer = trim(Input::get('answer')," 　\t\n\r\0\x0B");
+		$answer = is_numeric($answer)?$answer:-1;
 		$data =  Model_User_List::getAllListQuestions($key,$answer);				
 		$get = Input::get();
 		unset($get['page']);
@@ -22,7 +23,7 @@ class Controller_User_List extends Controller_Common_User {
 		$page_index = !is_numeric($page_index) ? 1 : $page_index;
 		$view->page_index = $page_index;
 		$offset = $page_index * $page_record_total - $page_record_total;
-		$Total = count($data ["retval"]);
+		$Total = count(@$data ["retval"]);
 		$view->total_record = $Total;		
 		$page_from = $offset + 1;		
 		$page_to = $page_index * $page_record_total;		

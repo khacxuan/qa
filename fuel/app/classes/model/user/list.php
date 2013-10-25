@@ -56,11 +56,12 @@ class Model_User_List {
 		} else {
 			$con = "";
 			if($answer ==-1){
-				$con = "";
+				$con = "";				
 			} else if($answer==0){
-				$con = '{answers:{ $exists: false}}';
+				$con = '{answers:{ $exists: false}}';				
 			}else{
 				$con = '{answers:{ $exists: true}}';
+				
 			}
 		}
 
