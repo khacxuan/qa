@@ -77,6 +77,11 @@ class Controller_User_Github extends Controller {
 			}
 			$users = Model_User_User::is_exist(array('_id' => $user, 'flag' => $flag_social['github']));
 		}
+		else if(count($users) > 0 and isset($users[0]['banned'])){
+			if ($users[0]['banned'] == 1) {
+				Response::redirect('user/login?error=1');
+			}
+		}
 		Session::set(SESSION_QA_USER, $users[0]);
 		Response::redirect('user/list');
 	}

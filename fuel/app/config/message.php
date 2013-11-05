@@ -2,6 +2,7 @@
 
 return array(
 	'err_not_login' => 'ログインしてください。',
+	'user_banned' => 'User has been banned',
 	'myvalidation_date' => '『:label』は日付が不正です。',
 	'myvalidation_unique' => '『:value』の:labelは既に存在します。別の:labelを指定してください。',
 	'myvalidation_romaji' => '『:label』はローマ字で入力してください。',
