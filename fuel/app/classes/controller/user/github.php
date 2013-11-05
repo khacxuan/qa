@@ -48,7 +48,7 @@ class Controller_User_Github extends Controller {
 	 */
 	private function firstRegister($userInfo) {
 		$user = Session::get(SESSION_QA_USER);
-		if (((!isset($user)))) {
+		if (!isset($user)) {
 		} else {
 			Response::redirect('user/list');
 		}
@@ -69,7 +69,7 @@ class Controller_User_Github extends Controller {
 				'created_at' => $time,
 				'updated_at' => $time,
 			);
-			//Facebook連携データはDBにInsert
+
 			$user = Model_User_User::insertUserFB($usergh);
 
 			if ($user == FALSE) {

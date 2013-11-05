@@ -47,9 +47,11 @@ class Controller_User_Twitter extends Controller {
 			Session::set('oauth_token_secret', $userId->oauth_token_secret);
 		}
 		else {
+			Session::destroy();
 			Response::redirect('user/login');
 		}
 		if ($userId == null && $userId->httpstatus != 200) {
+			Session::destroy();
 			Response::redirect('user/login');
 		}
 
@@ -61,8 +63,9 @@ class Controller_User_Twitter extends Controller {
 	private function firstRegister($userInfo) {
 
 		$user = Session::get(SESSION_QA_USER);
-		if (((!isset($user)))) {
+		if (!isset($user)) {
 		} else {
+			Session::destroy();
 			Response::redirect('user/list');
 		}
 		$flag_social = Config::get('flag_social');
@@ -70,6 +73,7 @@ class Controller_User_Twitter extends Controller {
 		$users = Model_User_User::is_exist(array('id' => $userInfo->user_id, 'flag' => $flag_social['twitter']));
 		if (empty($users) or count($users) <= 0) {
 			$userT = $this -> _twitter -> account_verifyCredentials();
+			Session::destroy();
 			$time = time();
 			$usertwitter = array(
 				'username' => $userT->screen_name,
@@ -82,7 +86,7 @@ class Controller_User_Twitter extends Controller {
 				'created_at' => $time,
 				'updated_at' => $time,
 			);
-			//Facebook連携データはDBにInsert
+
 			$user = Model_User_User::insertUserFB($usertwitter);
 
 			if ($user == FALSE) {
@@ -92,6 +96,7 @@ class Controller_User_Twitter extends Controller {
 		}
 		else if(count($users) > 0 and isset($users[0]['banned'])){
 			if ($users[0]['banned'] == 1) {
+				Session::destroy();
 				Response::redirect('user/login?error=1');
 			}
 		}

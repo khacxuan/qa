@@ -52,7 +52,7 @@ class Controller_User_Facebook extends Controller {
 	private function firstRegister($userInfo) {
 		//ログインしているかの確認
 		$user = Session::get(SESSION_QA_USER);
-		if (((!isset($user)))) {
+		if (!isset($user)) {
 		} else {
 			Response::redirect('user/list');
 		}
