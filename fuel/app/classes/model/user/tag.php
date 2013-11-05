@@ -36,9 +36,13 @@ class Model_User_Tag {
 					if(w.tag_ids){
 						b = db.tags.find({_id:{$in:w.tag_ids}}).toArray();
 					}			
+					var c = db.user.count({bookmark:{$gt:w._id}});
+					var d = db.qa.count({$and:[{_id: w._id},{answers:{$elemMatch:{better_flag:1}}}]});
 					a.push({
 						qa:w,
-						tag:b
+						tag:b,
+						favorite:c,
+						better_flag:d,
 					});
 				});
 				return a;

@@ -37,7 +37,7 @@ class Model_User_List {
 		
 		
 	}
-	
+
 
 	public static function getAllListQuestoinsByCon($key = "",$answer=-1, $limit, $offset) {
 		
@@ -64,7 +64,6 @@ class Model_User_List {
 				
 			}
 		}
-
 		$mdb = Mongo_DB::instance();		
 		$result = $mdb->execute('function (){
 				var a = [];		
@@ -72,16 +71,20 @@ class Model_User_List {
 					var b = [];
 					if(w.tag_ids){
 						b = db.tags.find({_id:{$in:w.tag_ids}}).toArray();
-					}			
+					}	
+					var c = db.user.count({bookmark:{$gt:w._id}});
+					var d = db.qa.count({$and:[{_id: w._id},{answers:{$elemMatch:{better_flag:1}}}]});
 					a.push({
 						qa:w,
-						tag:b
+						tag:b,
+						favorite:c,
+						better_flag:d,
 					});
 				});
 				return a;
-			}');	
-		
+			}');		
 		return $result;
+		
 	}
 
 }

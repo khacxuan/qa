@@ -35,7 +35,10 @@
 	<table class="table table-bordered table-data admin-com-index" border="1">
 		<tbody><tr>
 				<th>Title</th>
-				<th>Content</th>
+				<th>Count views</th>
+				<th>Count answers</th>
+				<th>Count favorites</th>
+				<th> Better_flag </th>
 				<th>Tags</th>
 				<th>Date</th>
 			</tr>
@@ -45,13 +48,17 @@
 				?>
 				<tr>
 					<td><a href="<?php echo uri::base() . 'user/detail/' . $dt['qa']['_id']; ?>"><?php echo @$dt['qa']['question_title']; ?></a></td>
-					<td><?php echo @$dt['qa']['question_content']; ?></td>
+					<td><?php echo (@$dt['qa']['views']!="")?$dt['qa']['views']:0; ?></td>
+					<td><?php echo count(@$dt['qa']['answers']); ?></td>
+					<td><?php echo $dt['favorite']; ?></td>
+					<td><?php echo @$dt['better_flag']; ?></td>					
 					<td><?php foreach ($dt['tag'] as $tag) { ?> 
 							<a href="<?php echo uri::base() . 'user/tag/' . $tag['_id']; ?>">
 							<?php echo $tag['name']; ?>
 							</a>&nbsp;&nbsp;&nbsp;&nbsp;
 		<?php } ?>
 					</td>
+					
 					<td><?php echo (@$dt['qa']['created_at'] != "") ? date('Y-m-d', @$dt['qa']['created_at']) : ""; ?></td>
 
 				</tr>
