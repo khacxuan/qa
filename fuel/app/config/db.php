@@ -9,7 +9,7 @@ return array(
 	'mongo' => array(
 		// This group is used when no instance name has been provided.
 		'default' => array(
-			'hostname'   => '127.0.0.1',
+			'hostname'   => '10.10.91.11',
 			'port' => 27017,
 			'database'   => 'qa',
 			'username'   => 'qa',
