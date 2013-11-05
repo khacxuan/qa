@@ -28,7 +28,10 @@
 				<li><a href="<?php echo Uri::create('user/profile') ?>">Profile</a></li>
 				<li><a href="<?php echo Uri::create('user/list') ?>">質問一覧</a></li>
 				<li><a href="<?php echo Uri::create('user/listuser') ?>">ユーザー一覧</a></li>
+				<li><a href="<?php echo Uri::create('user/taglist') ?>">タグ一覧</a></li>
 				<li><a href="<?php echo Uri::create('user/bookmark') ?>">お気に入り一覧</a></li>
+				<li><a href="<?php echo Uri::create('user/followers') ?>">フォロワー</a></li>
+				<li><a href="<?php echo Uri::create('user/followings') ?>">フォロー</a></li>
 				<li><a href="<?php echo Uri::create('user/logout') ?>">ログアウト</a></li>
 			</ul>
 		</div>
