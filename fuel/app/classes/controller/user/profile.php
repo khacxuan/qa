@@ -11,8 +11,8 @@ class Controller_User_Profile extends Controller_Common_User {
 		if (empty($check)) {
 			Response::redirect('user/login');
 		}
-		$data['name'] = Input::post('name', $check[0]['name']);
-		$data['email'] = Input::post('email', $check[0]['email']);
+		$data['name'] = Input::post('name', (isset($check[0]['name'])?$check[0]['name']:''));
+		$data['email'] = Input::post('email', (isset($check[0]['email'])?$check[0]['email']:''));
 		$data['password'] = Input::post('password', '');
 		$data['confirmpassword'] = Input::post('confirmpassword', '');
 
