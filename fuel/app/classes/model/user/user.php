@@ -89,6 +89,13 @@ class Model_User_User {
 
 		$mongodb = Mongo_Db::instance();
 		$id = $mongodb->where(array('_id' => $data['id']))->update('user', $updatedata);
+		if (!empty($data['tags'])) {
+			$arr_tags['tag_ids'] = Model_User_Question::getTagids(explode(',',$data['tags']));
+			$collection = $mongodb->get_collection('user');
+			$collection->update(array('_id' => $data['id']),
+					array('$set' => $arr_tags)
+			);
+		}
 		if ($id == true) {
 			return TRUE;
 		}
@@ -211,6 +218,20 @@ class Model_User_User {
 	}
 
 	/*
+	 * return Array()
+	*/
+	public static function getTags($arr = array()){
+		$data = array();
+		if (empty($arr)) {
+			return $data;
+		}
+		$mongodb = Mongo_Db::instance();
+		$mongodb->where_in('tag', $arr);
+		$mongodb->select(array('name'));
+		return $mongodb->get('tags');
+	}
+
+	/*
 	 * return Boolean
 	*/
 	public static function removeFollow($id = 0, $userFollow = 0) {
@@ -270,8 +291,17 @@ class Model_User_User {
 					ans_num = value.value;
 				}
 			}
+
 			var que_num = db.qa.find({"questioner": objId}).count();
-			return {ans:ans_num,ques:que_num};
+			var tag = Array();
+			var tag_num = db.qa.find({answers: {$elemMatch: {by: objId}}}).forEach(function(d){
+					for(var i = 0; i < d.tag_ids.length; i++) {
+						if (tag.indexOf(d.tag_ids[i].str)) {
+							tag.push(d.tag_ids[i].str);
+						}
+					}
+			});
+			return {ans:ans_num,ques:que_num, tags: tag.length};
 		}';
 		$re = $mongodb->execute($count,array($id));
 

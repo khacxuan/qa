@@ -38,6 +38,11 @@ use Fuel\Core\Form;
 			</td>
 		</tr>
 		<tr>
+			<td>Tags</td><td>
+				<?php echo Form::input('tags', ((isset($tags))?$tags:''),array('type' => 'text', 'id' => 'tags'));?><br />
+			</td>
+		</tr>
+		<tr>
 			<td></td>
 			<td>
 				<?php echo Form::input('confirm','confirm', array('type' => 'submit'));?>

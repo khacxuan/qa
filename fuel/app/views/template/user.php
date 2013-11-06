@@ -8,7 +8,16 @@
 		<?php echo Asset::js('bootstrap.min.js'); ?>
 		<?php echo Asset::js('jquery.simplePagination.js'); ?>
 		<?php echo Asset::js('jquery-ui-1.10.0.custom.min.js'); ?>
-
+		<?php
+			//Add css local for evey page
+			if (isset($css_file) and is_array($css_file)) {
+				foreach ($css_file as $file) {
+					if (\Fuel\Core\Asset::get_file($file, 'css')) {
+						echo Asset::css($file);
+					}
+				}
+			}
+		?>
 		<?php
 		//Add css local for evey page
 		if (isset($js_file) and is_array($js_file)) {

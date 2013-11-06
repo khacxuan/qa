@@ -11,7 +11,7 @@ use Fuel\Core\Config;
 	<tr>
 		<td>Username:</td>
 		<td><?php echo $userdetail['username'];?></td>
-	</t>
+	</tr>
 	<tr>
 		<td>Question Numbers:</td>
 		<td><?php echo (!empty($countQA) && !empty($countQA['ques']))?$countQA['ques']:'0';?></td>
@@ -19,6 +19,10 @@ use Fuel\Core\Config;
 	<tr>
 		<td>Answer Numbers:</td>
 		<td><?php echo (!empty($countQA) && !empty($countQA['ans']))?$countQA['ans']:'0';?></td>
+	</tr>
+	<tr>
+		<td>Tag Numbers:</td>
+		<td><?php echo (!empty($countQA) && !empty($countQA['tags']))?$countQA['tags']:'0';?></td>
 	</tr>
 </table>
 <script type="text/javascript">

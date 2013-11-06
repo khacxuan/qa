@@ -13,11 +13,18 @@ class Controller_User_Profile extends Controller_Common_User {
 		}
 		$data['name'] = Input::post('name', (isset($check[0]['name'])?$check[0]['name']:''));
 		$data['email'] = Input::post('email', (isset($check[0]['email'])?$check[0]['email']:''));
+		$tags = '';
+		if (isset($check[0]['tags']) && count($check[0]['tags']) > 0) {
+			$tags = implode(',', Model_User_User::getTags($check[0]['tags']));
+		}
+
+		$data['tags'] = Input::post('tags', $tags);
 		$data['password'] = Input::post('password', '');
 		$data['confirmpassword'] = Input::post('confirmpassword', '');
 
 		$confirm = Input::post('confirm', '');
-		$this->template->js_file = array('jquery.validate.min.js', 'localization/messages_jp.js');
+		$this->template->css_file = array('jquery-ui.min.css', 'jquery.tagsinput.css');
+		$this->template->js_file = array('jquery.validate.min.js', 'localization/messages_jp.js', 'jquery.tagsinput.min.js');
 		$this->template->script_file = 'user/profile/jsfile';
 		if (Input::method() == 'POST') {
 			if ($confirm != '') {
