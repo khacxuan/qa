@@ -14,6 +14,7 @@ class Controller_User_Login extends Controller_Common_User {
 		$data = array();
 		$data['username'] = Input::post('username', '');
 		$data['password'] = Input::post('password', '');
+		$banned = Input::get('error', 0);
 
 		$confirm = Input::post('confirm', '');
 		$this->template->js_file = array('jquery.validate.min.js', 'localization/messages_jp.js');
@@ -26,12 +27,19 @@ class Controller_User_Login extends Controller_Common_User {
 				if ($val->run()) {
 					$mongo_user = Model_User_User::checkUserExists($data['username'], $data['password'], TRUE);
 					if (count($mongo_user) > 0) {
-						Session::set(SESSION_QA_USER, $mongo_user[0]);
-						//redirect URL
-						if ($url_redirect != '') {
-							Response::redirect(base64_decode($url_redirect));
+						if(isset($mongo_user[0]['banned'])){
+							if ($mongo_user[0]['banned'] == 1) {
+								$banned = 1;
+							}
 						}
-						Response::redirect('user/list');
+						if ($banned == 0) {
+							Session::set(SESSION_QA_USER, $mongo_user[0]);
+							//redirect URL
+							if ($url_redirect != '') {
+								Response::redirect(base64_decode($url_redirect));
+							}
+							Response::redirect('user/list');
+						}
 					}
 					else {
 						$data['err'] = Config::get('err_not_login');
@@ -41,6 +49,9 @@ class Controller_User_Login extends Controller_Common_User {
 					$data['error'] = $val->error();
 				}
 			}
+		}
+		if ($banned == 1) {
+			$data['err'] = Config::get('user_banned');
 		}
 		$this->template->content = View::forge('user/login/index', $data);
 	}

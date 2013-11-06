@@ -52,7 +52,7 @@ class Controller_User_Facebook extends Controller {
 	private function firstRegister($userInfo) {
 		//ログインしているかの確認
 		$user = Session::get(SESSION_QA_USER);
-		if (((!isset($user)))) {
+		if (!isset($user)) {
 		} else {
 			Response::redirect('user/list');
 		}
@@ -89,6 +89,11 @@ class Controller_User_Facebook extends Controller {
 			}
 			$users = Model_User_User::is_exist(array('_id' => $user, 'flag' => $flag_social['facebook']));
 		} else {
+			if(count($users) > 0 and isset($users[0]['banned'])){
+				if ($users[0]['banned'] == 1) {
+					Response::redirect('user/login?error=1');
+				}
+			}
 			$entry = Model_User_User::updateFB(array('_id' => $users[0]['_id']), array('token' => $access_token));
 			if ($entry == FALSE) {
 				Response::redirect('user/login');

@@ -1,6 +1,6 @@
-<h2>List</h2>
+<h2>User List</h2>
 <!-- search form -->
-<form action="<?php echo uri::base() . 'user/list' ?>" method="get">
+<form action="<?php echo uri::base() . 'admin/listuser' ?>" method="get">
 	<div class="search form">
 		<table class="table table-bordered">
 			<tbody>
@@ -11,15 +11,7 @@
 					</td>
 
 				</tr>
-				<tr>
-					<th>Option</th>
-					<td>						
-						<input type="radio" name="answer" value="-1" <?php if(!isset($_GET['answer'])||$_GET['answer']==-1) echo "checked"; ?>>All
-						<input type="radio" name="answer" value="1" <?php if(isset($_GET['answer'])&&$_GET['answer']==1) echo "checked"; ?> >Answered
-						<input type="radio" name="answer" value="0" <?php if(isset($_GET['answer'])&&$_GET['answer']==0) echo "checked"; ?>>Not answer						
-					</td>
-
-				</tr>
+				
 				<tr>					
 					<td colspan="2">
 						<button class="btn medium primary"><i class="icon-search"></i> 検索する</button>
@@ -30,40 +22,28 @@
 	</div>
 </form>
 <!-- END search form -->
-<a href="<?php echo Uri::create('user/newqa') ?>">質問を追加</a>
 <?php if ($data['ok'] == 1 && !empty($data['retval'])) { ?>
 	<table class="table table-bordered table-data admin-com-index" border="1">
-		<tbody><tr>
-				<th>Title</th>
-				<th>Count views</th>
-				<th>Count answers</th>
-				<th>Count favorites</th>
-				<th> Better_flag </th>
-				<th>Tags</th>
+		<tbody>
+			<tr>
+				<th>User Name</th>
+				<th>Name</th>
 				<th>Date</th>
+				<th>Email</th>
+				<th>Banned</th>
 			</tr>
 			<?php
 			$data = $data['retval'];
 			foreach ($data as $dt) {
 				?>
 				<tr>
-					<td><a href="<?php echo uri::base() . 'user/detail/' . $dt['qa']['_id']; ?>"><?php echo @$dt['qa']['question_title']; ?></a></td>
-					<td><?php echo (@$dt['qa']['views']!="")?$dt['qa']['views']:0; ?></td>
-					<td><?php echo count(@$dt['qa']['answers']); ?></td>
-					<td><?php echo $dt['favorite']; ?></td>
-					<td><?php echo @$dt['better_flag']; ?></td>					
-					<td><?php foreach ($dt['tag'] as $tag) { ?> 
-							<a href="<?php echo uri::base() . 'user/tag/' . $tag['_id']; ?>">
-							<?php echo $tag['name']; ?>
-							</a>&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php } ?>
-					</td>
-					
-					<td><?php echo (@$dt['qa']['created_at'] != "") ? date('Y-m-d', @$dt['qa']['created_at']) : ""; ?></td>
-
+					<td><?php echo $dt['username']?></td>
+					<td><?php echo @$dt['name']; ?></td>					
+					<td><?php echo (@$dt['created_at'] != "") ? date('Y-m-d', @$dt['created_at']) : ""; ?></td>
+					<td><?php echo @$dt['email']?></td>
+					<td><?php echo Form::checkbox('banned[]', $dt['_id'], (isset($dt['banned']) && $dt['banned']==1)?true:false)?></td>
 				</tr>
-
-	<?php } ?>
+			<?php } ?>
 		</tbody></table>
 	<div class="page-nav row">
 		<div class="three columns">
@@ -83,7 +63,37 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('input[name="banned[]"]').change(function() {		   
+		    var flag = 0;
+		    if ($(this).is(':checked')) {
+				flag = 1;
+		    }
+	
+		    $.ajax({
+			type: 'POST',
+			datatype: 'json',
+			data: {'id': this.value, 'flag':flag},
+			url: "<?php echo Config::get('base_url') . "ajax/admin/update_banned" ?>",
+			success: function(data) {
+			    if (data.err_msg) {
+					alert(data.err_msg);
+			    }
+			}						
+		    });	
+		});
 
+		
+		var url_param = '<?php echo isset($url_param) ? $url_param : "?page=" ?>';
+		var page_index = <?php echo isset($page_index) ? $page_index : 0 ?>;
+		
+		$('a[id^="qadelete_"]').click(function() {
+		    qa_id = this.id.split('_')[1];
+		    if(confirm('<?php echo Config::get('qa_confirm_delete') ?>')){
+		    	window.location = "<?php echo uri::create('admin/list/delete/') ?>" + qa_id + url_param + page_index;
+			    return false;
+		    }
+		});
+		
 		var url_new='<?php echo isset($url_param) ? $url_param : "?page=" ?>';
 		var total_record =<?php echo isset($total_record) ? $total_record : 0 ?>;
 		if (total_record>0){
