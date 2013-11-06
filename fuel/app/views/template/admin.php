@@ -25,6 +25,7 @@
 		<div class="menu">
 			<ul>
 				<li><a href="<?php echo Uri::create('admin/list') ?>">質問一覧</a></li>
+				<li><a href="<?php echo Uri::create('admin/listuser') ?>">ユーザー一覧</a></li>
 			</ul>
 		</div>
 		<div id="wrapper">
