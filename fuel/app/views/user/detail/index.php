@@ -72,3 +72,9 @@
 	<div><button id="reply">Your answer</button></div>
 	<br /><br /><br />
 </div>
+<div>The same question</div>
+<?php 
+	foreach ($same_qa['retval'] as $item) {
+?>
+<div><a href="<?php echo Uri::create('user/detail/'.$item['_id']) ?>"><?php echo $item['question_title'] ?></a></div>
+<?php } ?>

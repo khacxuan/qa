@@ -8,5 +8,6 @@ return array(
 	'listuser_displayed_pages' => 2,
 	'qa_record_page_count' => 10,
 	'qa_paging_displayed_pages' => 10,
-	'flag_social' => array('facebook' => 1, 'twitter' => 2, 'github' => 3, 'none' => 4)
+	'flag_social' => array('facebook' => 1, 'twitter' => 2, 'github' => 3, 'none' => 4),
+	'limit_same_qa' => 10
 );

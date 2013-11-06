@@ -142,6 +142,19 @@ class Model_User_Detail {
 						   ) 
 				 -> update('qa',array('$set' => array("answers.$index.better_flag" => 1)), array(), true);
 	}
+
+	static public function get_same_question($question_id, $limit) {
+		$mongodb = \Mongo_Db::instance();
+		$result = $mongodb->execute('function (){
+				var qa = [];
+				var tag = db.qa.find({_id: ObjectId("'.$question_id.'")}).toArray();
+				if(tag[0].tag_ids){
+					qa =  db.qa.find({tag_ids : {$elemMatch: {$in: tag[0].tag_ids}}, _id : {$ne : ObjectId("'.$question_id. '")}}, {_id: 1, question_title: 1}).sort({updated_at: -1}).limit('.$limit.').toArray();
+				}
+				return qa;
+			}');
+		return $result;
+	}
 	
 }
 
