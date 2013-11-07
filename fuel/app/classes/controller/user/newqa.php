@@ -11,7 +11,7 @@ class Controller_User_Newqa extends Controller_Common_User {
 		if(Input::post()){
 			$val=Validation::forge();
 			$val->add_field('title','title','required|max_length[100]');
-			$val->add_field('content','content','required|max_length[1000]');
+			$val->add_field('content','content','required');
 			
 			if($val->run()){
 				$loginU = Session::get(SESSION_QA_USER);
@@ -28,7 +28,7 @@ class Controller_User_Newqa extends Controller_Common_User {
 			}else{
 				$data['error']=$val->error();
 			}
-		}
+		}		
 		$this->template->content = View::forge('user/newqa/index', $data);
 	}
 }

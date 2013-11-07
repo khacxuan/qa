@@ -7,15 +7,15 @@
 
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
 <link href="<?php echo Asset::get_file('css/jquery.tagit.css', 'tag-it')?>" rel="stylesheet" type="text/css">
-<script>
+<script type="text/javascript">
 
 		CKEDITOR.disableAutoInline = true;
 
 		$( document ).ready( function() {
-			 $('#form_taglist').val('');
 			$( '#editor1' ).ckeditor(); // Use CKEDITOR.replace() if element is <textarea>.
-			//$( '#editable' ).ckeditor(); // Use CKEDITOR.inline().
-
+				//$( '#editable' ).ckeditor(); // Use CKEDITOR.inline().
+				
+			$('#form_taglist').val('');						
 			$("#myTags").tagit({
 				autocomplete: { source: function( request, response ) {
 					// var filter = request.term.toLowerCase();
@@ -59,18 +59,17 @@
 				    $('#form_taglist').val(names.join(','));
 				    console.log($('#form_taglist').val());
 				},
-			});
+			});			
 		});
 
 </script>
-
-<?php echo Form::open(array('action' => 'user/newqa', 'method' => 'post')); ?>
+<?php echo Form::open(array('action' => 'user/newqa', 'method' => 'post', 'id'=>'frmqa')); ?>
 	<?php echo Form::hidden('taglist', '')?>
 	<table>
 		<tr>
 			<td>Title</td>
 			<td>
-				<input type='text' name='title' width="500px"></input>
+				<input type='text' name='title' width="500px" value='<?php echo isset($_POST['title'])?$_POST['title']:""?>'></input>
 				<?php if(isset($error['title'])){ ?>
 					<br/>
 					<span class="error"><?php echo $error['title'] ?></span>
@@ -80,8 +79,7 @@
 		<tr>
 			<td>Content</td>
 			<td>
-				<textarea cols="80" id="editor1" name="content" rows="10">
-				</textarea>
+				<textarea cols="80" id="editor1" name="content" rows="10"><?php echo trim(Input::post('ckcontent',''));?></textarea>
 				<?php if(isset($error['content'])){ ?>
 					<span class="error"><?php echo $error['content'] ?></span>
 				<?php } ?>
@@ -94,6 +92,6 @@
 			    </ul>		
 			</td>	    
 		</tr>
-		<tr><td colspan="2"><input type="submit" value="Post Your Question"></input></td></tr>
+		<tr><td colspan="2"><input type="submit" value="Post Your Question" id='btnSave'></input></td></tr>
 	</table>
 <?php echo Form::close()?>
