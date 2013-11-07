@@ -13,9 +13,10 @@
 
 		$( document ).ready( function() {
 			$( '#editor1' ).ckeditor(); // Use CKEDITOR.replace() if element is <textarea>.
-				//$( '#editable' ).ckeditor(); // Use CKEDITOR.inline().
-				
-			$('#form_taglist').val('');						
+			//$( '#editable' ).ckeditor(); // Use CKEDITOR.inline().
+								
+			$('#form_taglist').val('');
+			 			
 			$("#myTags").tagit({
 				autocomplete: { source: function( request, response ) {
 					// var filter = request.term.toLowerCase();
@@ -59,12 +60,18 @@
 				    $('#form_taglist').val(names.join(','));
 				    console.log($('#form_taglist').val());
 				},
-			});			
+			});
+
+			$('#btnSave').click(function(){
+				$('#form_ckcontent').val(CKEDITOR.instances['editor1'].getData());
+				$('#frmqa').submit();
+			});
 		});
 
 </script>
 <?php echo Form::open(array('action' => 'user/newqa', 'method' => 'post', 'id'=>'frmqa')); ?>
 	<?php echo Form::hidden('taglist', '')?>
+	<?php echo Form::hidden('ckcontent', '')?>
 	<table>
 		<tr>
 			<td>Title</td>
@@ -92,6 +99,6 @@
 			    </ul>		
 			</td>	    
 		</tr>
-		<tr><td colspan="2"><input type="submit" value="Post Your Question" id='btnSave'></input></td></tr>
+		<tr><td colspan="2"><input type="button" value="Post Your Question" id='btnSave'></input></td></tr>
 	</table>
 <?php echo Form::close()?>
