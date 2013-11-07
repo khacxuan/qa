@@ -38,25 +38,29 @@
 		foreach ($reply as $item) {
 	?>
 	<div>
-	<div class="left">
-		<img src="<?php echo Uri::create("assets/img/s_1314188084.jpg") ?>" alt=""/><br />
-		<span><a href="javascript:void(0)"><?php echo $item['username'] ?></a></span><br />
-		good: <span name="<?php echo 'counter_'.$item['by'] ?>"><?php echo $item['count_better'] ?></span>
-	</div>
-	<div class="right">
-		<div><?php echo $item['content'] ?></div>
-		<div class="q-date">
-			<?php if($login_id == $question['questioner'] && $item['better_flag'] != 1 && $better_flag != 1 ) { ?>
-				<button id="<?php echo 'better_'.$i ?>" name="<?php echo 'btn_better_'.$item['by'] ?>">Very good</button>
-			<?php } ?>
-			Date reply: <?php echo date('Y-m-d',$item['date']); ?>
-			<span id="<?php echo 'better_img_'.$i ?>">
-				<?php if($item['better_flag'] == 1) { ?>
-					<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />
-				<?php } ?>
-			</span>
+		<div class="left">
+			<img src="<?php echo Uri::create("assets/img/s_1314188084.jpg") ?>" alt=""/><br />
+			<span><a href="javascript:void(0)"><?php echo $item['username'] ?></a></span><br />
+			good: <span name="<?php echo 'counter_'.$item['by'] ?>"><?php echo $item['count_better'] ?></span>
 		</div>
-	</div>
+		<div class="right">
+			<div><?php echo $item['content'] ?></div>
+			<div class="q-date">
+				<?php if($login_id == $question['questioner'] && $item['better_flag'] != 1 && $better_flag != 1 ) { ?>
+					<button id="<?php echo 'better_'.$i ?>" name="<?php echo 'btn_better_'.$item['by'] ?>">Very good</button>
+				<?php } ?>
+				Date reply: <?php echo date('Y-m-d',$item['date']); ?>
+				<span id="<?php echo 'better_img_'.$i ?>">
+					<?php if($item['better_flag'] == 1) { ?>
+						<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />
+					<?php } ?>
+				</span>
+			</div>
+			<br /><br />
+			<div name="div_reply" id="<?php echo 'div_reply_'.$i ?>" class="q-reply" <?php echo $item['questioner_reply'] !="" ? "" : "style='display: none;'" ?> >
+				<?php if($item['questioner_reply'] != ""){ echo $item['questioner_reply']; }?>
+			</div>
+		</div>
 	</div>
 	<div class="clear"></div>
 	<div class="line"></div>

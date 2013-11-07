@@ -84,34 +84,59 @@
 			}
 			
 			$("button[id^=better]").click(function(){
-					var url= '<?php echo Uri::create('ajax/user/set_better'); ?>';
-					var qid = $("#qid").val();
-					var id = this.id.split('_');
-					var by = this.name.split('_'); 
-					var index = -1;
-					if(id[1] != null){
-						index = id[1]; 
-					}
-					$.post(url,{question_id: qid, index: index}, function(data) {                 					
-						var response = JSON.parse(data);
-						if(response.hasOwnProperty('err_msg')){
-							if(0 == response.err_msg.length){
-								if(response.success == true){
-									var v = $("[name=counter_" + by[2] + "]").first().text(); alert(v);
-									if(v == "" || v == null){
-										v = 0;
-									}
-									$("[name=counter_" + by[2] + "]").text(++v);
-									$("button[name^=btn_better_]").remove();
-									$("#better_img_" + index).prepend('<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />');
-								}
-							}else{
-								alert(response.err_msg);
-							}
-						}
-					});	
+				var url= '<?php echo Uri::create('ajax/user/set_better'); ?>';
+				var qid = $("#qid").val();
+				var id = this.id.split('_');
+				var by = this.name.split('_'); 
+				
+				var index = -1;
+				if(id[1] != null){
+					index = id[1]; 
+				}
+				var html = '<br><br><textarea cols="80" id="questioner_reply" name="questioner_reply" rows="10"></textarea>';
+				    html += '<button id="btn_reply_' + index + '" name="btn_reply_' + by[2] +'">save</button>';
+				
+				$('#div_reply_' + index).html(html);
+				$('#questioner_reply').ckeditor();	
+				$( "#btn_reply_" + index).bind( "click", send_questioner_reply);
+				$('#div_reply_' + index).fadeIn("slow");
 				return false;
 			});
+			
+			send_questioner_reply =  function(){
+				var url= '<?php echo Uri::create('ajax/user/set_better'); ?>';
+				var qid = $("#qid").val();
+				var id = this.id.split('_'); 
+				var by = this.name.split('_'); 
+				var index = -1;
+				var comment = $( "#questioner_reply").val();
+				
+				if(id[2] != null){
+					index = id[2]; 
+				}
+				$.post(url,{question_id: qid, index: index, comment: comment}, function(data) {                 					
+					var response = JSON.parse(data);
+					if(response.hasOwnProperty('err_msg')){
+						if(0 == response.err_msg.length){
+							if(response.success == true){
+								var v = $("[name=counter_" + by[2] + "]").first().text(); 
+								if(v == "" || v == null){
+									v = 0;
+								}
+								$("[name=counter_" + by[2] + "]").text(++v);
+								$("button[name^=btn_better_]").remove();
+								$("#better_img_" + index).prepend('<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />');
+								$('#div_reply_' + index).hide();
+								$('#div_reply_' + index).html(comment);
+								$('#div_reply_' + index).fadeIn("slow");
+							}
+						}else{
+							alert(response.err_msg);
+						}
+					}
+				});	
+				return false;
+			}
 			
 		});
 

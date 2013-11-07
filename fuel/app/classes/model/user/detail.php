@@ -26,6 +26,7 @@ class Model_User_Detail {
 									  } 
 					var replies = [];
 					var better_flag = "";
+					var questioner_reply = "";
 					if(w.answers){
 						w.answers.forEach(function(item){
 							var username = db.user.find(
@@ -44,6 +45,7 @@ class Model_User_Detail {
 							
 							if(item.better_flag == 1){
 								better_flag = 1;
+								questioner_reply = item.questioner_reply; 
 							}
 							
 							replies.push({
@@ -52,7 +54,8 @@ class Model_User_Detail {
 								content: item.content,
 								date: item.date,
 								count_better: count_better,
-								better_flag: item.better_flag
+								better_flag: item.better_flag,
+								questioner_reply: item.questioner_reply
 							})
 						});
 					}
@@ -132,7 +135,7 @@ class Model_User_Detail {
 				 -> update('qa',array('$inc' => array("views" => 1)), array(), true); 
 	}
 	
-	static public function set_better($question_id, $loginid, $index) {
+	static public function set_better($question_id, $loginid, $index, $comment) {
 		$mongodb = \Mongo_Db::instance();
 		return $mongodb -> where(
 									array(
@@ -140,7 +143,7 @@ class Model_User_Detail {
 											'questioner' => new MongoId($loginid)
 										 )
 						   ) 
-				 -> update('qa',array('$set' => array("answers.$index.better_flag" => 1)), array(), true);
+				 -> update('qa',array('$set' => array("answers.$index.better_flag" => 1,  "answers.$index.questioner_reply" => $comment)), array(), true);
 	}
 
 	static public function get_same_question($question_id, $limit) {

@@ -147,13 +147,14 @@ class Controller_Ajax_User extends Controller {
 				$user = Session::get(SESSION_QA_USER);
 				$question_id = Input::post('question_id');
 				$index = Input::post('index');
+				$comment = Input::post('comment');
 				if(!isset($question_id)){
 					$question_id = '-1';
 				}
 				if(!isset($index)){
 					$index = '-1';
 				}
-				$flag = Model_User_Detail::set_better($question_id, $user['_id'], $index);
+				$flag = Model_User_Detail::set_better($question_id, $user['_id'], $index, $comment);
 				$data['err_msg'] = '';
 				$data['success'] = $flag;
 			}
