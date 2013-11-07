@@ -226,7 +226,7 @@ class Model_User_User {
 			return $data;
 		}
 		$mongodb = Mongo_Db::instance();
-		$mongodb->where_in('tag', $arr);
+		$mongodb->where_in('_id', $arr);
 		$mongodb->select(array('name'));
 		return $mongodb->get('tags');
 	}

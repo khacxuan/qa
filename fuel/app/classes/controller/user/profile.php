@@ -14,8 +14,15 @@ class Controller_User_Profile extends Controller_Common_User {
 		$data['name'] = Input::post('name', (isset($check[0]['name'])?$check[0]['name']:''));
 		$data['email'] = Input::post('email', (isset($check[0]['email'])?$check[0]['email']:''));
 		$tags = '';
-		if (isset($check[0]['tags']) && count($check[0]['tags']) > 0) {
-			$tags = implode(',', Model_User_User::getTags($check[0]['tags']));
+		if (isset($check[0]['tag_ids']) && count($check[0]['tag_ids']) > 0) {
+			$arr_tag_name = Model_User_User::getTags($check[0]['tag_ids']);
+			if (count($arr_tag_name) > 0) {
+				$tags = '';
+				foreach ($arr_tag_name as $k=>$v) {
+					$tags .= ','.$v['name'];
+				}
+				$tags = substr($tags, 1);
+			}
 		}
 
 		$data['tags'] = Input::post('tags', $tags);
