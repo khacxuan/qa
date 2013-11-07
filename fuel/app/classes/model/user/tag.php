@@ -85,12 +85,22 @@ class Model_User_Tag {
 		
 		$mdb = Mongo_DB::instance();
 		$result = $mdb->execute('function (){
-			return db.tags.find(' . $con .').skip(' . $offset . ').limit(' . $limit . ').toArray();
-		}');
-			
+			var a = [];
+			db.tags.find(' . $con .').skip(' . $offset . ').limit(' . $limit . ').forEach(function(t){	
+				tid = t._id;			
+				var c = db.qa.count({tag_ids:{$exists: true}, tag_ids:{$in: [tid]}});
+				a.push({					
+					tag:t,
+					count_qa:c,
+				});
+			});
+				
+			return a;
+		}');		
 		if($result['ok'] == 1 && !empty($result['retval'])){
 			return $result['retval'];
-		}
+		}		
+		
 		return array();
 	}
 }
