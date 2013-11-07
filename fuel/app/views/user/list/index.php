@@ -51,7 +51,7 @@
 					<td><?php echo (@$dt['qa']['views']!="")?$dt['qa']['views']:0; ?></td>
 					<td><?php echo count(@$dt['qa']['answers']); ?></td>
 					<td><?php echo $dt['favorite']; ?></td>
-					<td><?php echo @$dt['better_flag']; ?></td>					
+					<td><?php if($dt['better_flag']>=1){ ?><img src="<?php echo Fuel\Core\Uri::base().'assets/img/check.png' ?>" > <?php } ?> </td>					
 					<td><?php foreach ($dt['tag'] as $tag) { ?> 
 							<a href="<?php echo uri::base() . 'user/tag/' . $tag['_id']; ?>">
 							<?php echo $tag['name']; ?>
