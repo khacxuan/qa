@@ -29,7 +29,7 @@
 			<?php			
 			foreach ($tags as $tag) { ?>
 				<tr>					
-					<td><a href='<?php echo uri::base().'user/tag/'.$tag['_id']; ?>'><?php  echo $tag['name'] ?></a></td>					
+					<td><a href='<?php echo uri::base().'user/tag/'.$tag['tag']['_id']; ?>'><?php  echo $tag['tag']['name'].'('.$tag['count_qa'].')' ?></a></td>					
 				</tr>
 			<?php } ?>
 		</tbody></table>
