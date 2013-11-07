@@ -53,6 +53,9 @@
 				<span id="<?php echo 'better_img_'.$i ?>">
 					<?php if($item['better_flag'] == 1) { ?>
 						<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />
+						<?php if($item['questioner_reply'] ==""){ ?>
+							<a href="javascript:void(0)" id="<?php echo 'ureply_'.$i ?>" name="<?php echo 'btn_ureply_'.$item['by'] ?>">Reply</a>
+						<?php } ?>
 					<?php } ?>
 				</span>
 			</div>

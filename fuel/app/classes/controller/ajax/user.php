@@ -86,6 +86,7 @@ class Controller_Ajax_User extends Controller {
 					$params['reply'] = array_merge($reply,array("username" => $user['username']));
 					$params['show_button'] = $show_button;
 					$params['count_better'] = $info['retval'][0]['count_better'];
+					$params['total_answer'] = $info['retval'][0]['total_answer'];
 					
 					$view = View::forge('user/detail/item', $params);
 					$list = $view->render();

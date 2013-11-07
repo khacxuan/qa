@@ -90,7 +90,8 @@ class Model_User_Detail {
 		$mongodb = \Mongo_Db::instance();
 		$result = $mongodb->execute('function (){
 				var count_better = 0;
-				var questioner = [];
+				var questioner = 0;
+				var total_answer = 0;
 				var result = [];
 				db.qa.find({answers: {$elemMatch: {by: ObjectId("'.$by.'"), better_flag: 1}}}).forEach(function(c){
 					c.answers.forEach(function(item){
@@ -100,9 +101,11 @@ class Model_User_Detail {
 					});
 				});
 				questioner = db.qa.find({_id : ObjectId("'.$question_id.'"), questioner : ObjectId("'.$by.'") }).count();
+				total_answer = db.qa.find({_id : ObjectId("'.$question_id.'")},{_id: 0, answers: 1}).toArray();
 				result.push({
 					count_better: count_better,
-					questioner: questioner
+					questioner: questioner,
+					total_answer: total_answer[0]["answers"].length - 1
 				});
 				return result;
 			}');		

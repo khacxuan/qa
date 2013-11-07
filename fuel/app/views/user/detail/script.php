@@ -83,11 +83,22 @@
 				$("#error").fadeIn("slow");
 			}
 			
-			$("button[id^=better]").click(function(){
+			$("button[id^=better]").click(function(event){
+				set_better(this);
+				return false;
+			});
+			
+			$("a[id^=ureply]").click(function(){
+				set_better(this);
+				return false;
+			});
+						
+			set_better = function(obj){
+				
 				var url= '<?php echo Uri::create('ajax/user/set_better'); ?>';
-				var qid = $("#qid").val();
-				var id = this.id.split('_');
-				var by = this.name.split('_'); 
+				var qid = $("#qid").val(); 
+				var id = obj.id.split('_');
+				var by = obj.name.split('_'); 
 				
 				var index = -1;
 				if(id[1] != null){
@@ -95,13 +106,13 @@
 				}
 				var html = '<br><br><textarea cols="80" id="questioner_reply" name="questioner_reply" rows="10"></textarea>';
 				    html += '<button id="btn_reply_' + index + '" name="btn_reply_' + by[2] +'">save</button>';
-				
+				$('[name=div_reply]').html('');
 				$('#div_reply_' + index).html(html);
 				$('#questioner_reply').ckeditor();	
 				$( "#btn_reply_" + index).bind( "click", send_questioner_reply);
 				$('#div_reply_' + index).fadeIn("slow");
-				return false;
-			});
+				
+			}
 			
 			send_questioner_reply =  function(){
 				var url= '<?php echo Uri::create('ajax/user/set_better'); ?>';
@@ -109,7 +120,7 @@
 				var id = this.id.split('_'); 
 				var by = this.name.split('_'); 
 				var index = -1;
-				var comment = $( "#questioner_reply").val();
+				var comment =CKEDITOR.instances.questioner_reply.document.getBody().getChild(0).getText();
 				
 				if(id[2] != null){
 					index = id[2]; 
@@ -125,10 +136,17 @@
 								}
 								$("[name=counter_" + by[2] + "]").text(++v);
 								$("button[name^=btn_better_]").remove();
-								$("#better_img_" + index).prepend('<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />');
+								var c = '<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />';
+								if(comment == ""){
+									c += '<a href="javascript:void(0)" id="ureply_' + index + '" name="btn_ureply_' + by[2]+ '">Reply</a>';
+								}
+								$("#better_img_" + index).html(c);
 								$('#div_reply_' + index).hide();
 								$('#div_reply_' + index).html(comment);
 								$('#div_reply_' + index).fadeIn("slow");
+								if(comment == ""){
+									$( "#ureply_" + index).bind( "click", function(){ set_better(this) });
+								}
 							}
 						}else{
 							alert(response.err_msg);
