@@ -266,13 +266,13 @@ class Model_User_User {
 		$mongodb = Mongo_Db::instance();
 		$count = 'function (id) {
 			var objId = ObjectId(id);
-			var fmap = function() {
+			/*var fmap = function() {
 					for(var i in this.answers){
-						if(this.answers[i].by == sid) {emit(this.answers[i].by, 1)};
+						if(this.answers[i].by == sid) {emit(this.answers[i].by, this.answers[i].content)};
 					}
 				};
 			var freduce = function(k, vals) {
-					return vals.length;
+					return vals;
 				};
 			var re = db.qa.mapReduce(
 							fmap,
@@ -290,9 +290,10 @@ class Model_User_User {
 				if (value != null) {
 					ans_num = value.value;
 				}
-			}
+			}*/
 
-			var que_num = db.qa.find({"questioner": objId}).count();
+			var que_num = db.qa.find({"questioner": objId}, {question_content: 1}).toArray();
+			var ans_num = db.qa.find({answers: {$elemMatch: {by: objId}}}).toArray();
 			var tag = Array();
 			var tag_num = db.qa.find({answers: {$elemMatch: {by: objId}}}).forEach(function(d){
 					for(var i = 0; i < d.tag_ids.length; i++) {
