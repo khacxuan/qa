@@ -36,7 +36,13 @@ class Controller_User_Github extends Controller {
 			));
 			$user = $this->apiRequest('https://api.github.com/user', FALSE, $token->access_token);
 			Session::delete('state');
-			$this->firstRegister($user);
+			$user_profile = Session::get('profilepage', null);
+			if ($user_profile == null) {//not from profile page
+				$this->firstRegister($user);
+			} else {
+				Session::delete('profilepage');
+				$this->changeProfile($user);
+			}
 		}
 		else {
 			Response::redirect('user/login');
@@ -53,18 +59,21 @@ class Controller_User_Github extends Controller {
 			Response::redirect('user/list');
 		}
 		$flag_social = Config::get('flag_social');
-		$users = Model_User_User::is_exist(array('id' => ''.$userInfo->id, 'flag' => $flag_social['github']));
+		$users = Model_User_User::is_exist(array('id_github' => ''.$userInfo->id));
 
 		if (empty($users) or count($users) <= 0) {
 
 			$time = time();
 			$usergh = array(
-				'username' => $userInfo->login,
+				//'username' => $userInfo->login,
 				'email' => $userInfo->email,
-				'flag' => $flag_social['github'],
-				'id' => ''.$userInfo->id,
+				'id_facebook' => '',
+				'token_facebook' => '',
+				'id_github' => ''.$userInfo->id,
+				'token_github' => '',
+				'id_twitter' => '',
+				'token_twitter' => '',
 				'name' => isset($userInfo->name) ? $userInfo->name : '',
-				'token' => '',
 				'password' => '',
 				'created_at' => $time,
 				'updated_at' => $time,
@@ -75,7 +84,7 @@ class Controller_User_Github extends Controller {
 			if ($user == FALSE) {
 				Response::redirect('user/login');
 			}
-			$users = Model_User_User::is_exist(array('_id' => $user, 'flag' => $flag_social['github']));
+			$users = Model_User_User::is_exist(array('_id' => $user));
 		}
 		else if(count($users) > 0 and isset($users[0]['banned'])){
 			if ($users[0]['banned'] == 1) {
@@ -84,6 +93,38 @@ class Controller_User_Github extends Controller {
 		}
 		Session::set(SESSION_QA_USER, $users[0]);
 		Response::redirect('user/list');
+	}
+
+	private function changeProfile($userInfo) {
+
+		$users = Model_User_User::is_exist(array('id_github' => ''.$userInfo->id));
+
+		if (empty($users) or count($users) <= 0) {
+
+			$time = time();
+
+			$usergh = array(
+					'id_github' => ''.$userInfo->id,
+					'token_github' => '',
+					'updated_at' => $time,
+			);
+
+			//get login session
+			$usersession = Session::get(SESSION_QA_USER, null);
+			if ($usersession == null) {//not login
+				Response::redirect('user/login');
+			}
+			if (empty($usersession['email'])) {
+				$usergh['email'] = $userInfo->email;
+			}
+			$user = Model_User_User::updateUserSocial($usersession['_id'], $usergh);
+			if ($user == FALSE) {
+				Response::redirect('user/login');
+			}
+			Response::redirect('user/profile');
+		} else {
+			Response::redirect('user/profile?error=1&type=Github');
+		}
 	}
 
 	function apiRequest($url, $post = FALSE, $session = '',$headers = array()) {

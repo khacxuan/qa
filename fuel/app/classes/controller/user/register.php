@@ -7,8 +7,9 @@ use Fuel\Core\Config;
 class Controller_User_Register extends Controller_Common_User {
 	public function action_index() {
 		$data = array();
-		$data['username'] = Input::post('username', '');
+		$data['email'] = Input::post('email', '');
 		$data['password'] = Input::post('password', '');
+		$data['name'] = Input::post('name', '');
 		$data['confirmpassword'] = Input::post('confirmpassword', '');
 
 		$confirm = Input::post('confirm', '');
@@ -18,7 +19,8 @@ class Controller_User_Register extends Controller_Common_User {
 			if ($confirm != '') {
 				$val = Validation::forge();
 				$val->add_callable('Util_Validation');
-				$val->add_field('username', 'Username', 'required|trim|unique');
+				$val->add_field('email', 'Email', 'required|trim|valid_email|unique');
+				$val->add_field('name', 'Name', 'required|trim');
 				$val->add_field('password', 'Password', 'required|trim|min_length[6]');
 				$val->add_field('confirmpassword', 'Confirm Password', 'required|trim|min_length[6]|match_field[password]');
 				if ($val->run()) {

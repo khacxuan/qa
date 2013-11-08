@@ -19,6 +19,8 @@ return array(
 	'msg_remove_bookmark_sucess' => 'Remove bookmark sucess!',
 	'msg_confirm_delete' => 'Are you ready to delete ?',
 	'msg_err' => 'Error',
-	'msg_edit_sucess' => 'Edit successfully'
+	'msg_edit_sucess' => 'Edit successfully',
+	'msg_err_social' => ':social has been existed',
+	'msg_err_delete' => 'Can not delete',
 );
 

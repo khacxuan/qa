@@ -3,11 +3,13 @@
 	<head>
 		<meta charset="utf-8">
 		<?php echo Asset::css('style.css'); ?>
+		<?php echo Asset::css('bootstrap.min.css'); ?>
 
 		<?php echo Asset::js('jquery-1.9.1.min.js'); ?>
 		<?php echo Asset::js('bootstrap.min.js'); ?>
 		<?php echo Asset::js('jquery.simplePagination.js'); ?>
 		<?php echo Asset::js('jquery-ui-1.10.0.custom.min.js'); ?>
+		<?php echo Asset::js('bootstrap.min.js'); ?>
 		<?php
 			//Add css local for evey page
 			if (isset($css_file) and is_array($css_file)) {

@@ -7,10 +7,10 @@ use Fuel\Core\Form;
 <table style="text-align: left;">
 	<tbody>
 		<tr>
-			<td>Username : </td>
+			<td>Email : </td>
 			<td>
-				<?php echo Form::input('username', $username, array('id' => 'username'));?><br />
-				<font color="red"><?php echo (isset($error) && isset($error['username']))?$error['username']:'';?></font>
+				<?php echo Form::input('email', $email, array('id' => 'email'));?><br />
+				<font color="red"><?php echo (isset($error) && isset($error['email']))?$error['email']:'';?></font>
 			</td>
 		</tr>
 		<tr>
@@ -27,11 +27,11 @@ use Fuel\Core\Form;
 				<a href="<?php echo Uri::create('user/register')?>">会員登録</a><br />
 				<br />
 				<br />
-				<a href="<?php echo Uri::create('user/facebook');?>"><img alt="facebook" src="<?php echo Uri::base()?>assets/img/icon_facebook.png" /></a>
+				<a href="<?php echo Uri::create('user/login/social/facebook');?>"><img alt="facebook" src="<?php echo Uri::base()?>assets/img/icon_facebook.png" /></a>
 				<br />
-				<a href="<?php echo Uri::create('user/twitter');?>"><img alt="twitter" src="<?php echo Uri::base()?>assets/img/icon_twitter.png" /></a>
+				<a href="<?php echo Uri::create('user/login/social/twitter');?>"><img alt="twitter" src="<?php echo Uri::base()?>assets/img/icon_twitter.png" /></a>
 				<br />
-				<a href="<?php echo Uri::create('user/github');?>"><img alt="twitter" src="<?php echo Uri::base()?>assets/img/github-logo.png" /></a>
+				<a href="<?php echo Uri::create('user/login/social/github');?>"><img alt="twitter" src="<?php echo Uri::base()?>assets/img/icon_github.png" /></a>
 			</td>
 		</tr>
 	</tbody>
@@ -44,7 +44,7 @@ use Fuel\Core\Form;
 				error.appendTo( element.siblings("font") );
 			},
 			rules: {
-				username: {
+				email: {
 					required: true
 				},
 				password: {

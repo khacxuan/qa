@@ -12,7 +12,7 @@ class Controller_User_Login extends Controller_Common_User {
 			Response::redirect('user/list');
 		}
 		$data = array();
-		$data['username'] = Input::post('username', '');
+		$data['email'] = Input::post('email', '');
 		$data['password'] = Input::post('password', '');
 		$banned = Input::get('error', 0);
 
@@ -22,10 +22,10 @@ class Controller_User_Login extends Controller_Common_User {
 			if ($confirm != '') {
 				$val = Validation::forge();
 				$val->add_callable('Util_Validation');
-				$val->add_field('username', 'Username', 'required|trim');
+				$val->add_field('email', 'Email', 'required|trim');
 				$val->add_field('password', 'Password', 'required|trim');
 				if ($val->run()) {
-					$mongo_user = Model_User_User::checkUserExists($data['username'], $data['password'], TRUE);
+					$mongo_user = Model_User_User::checkUserExists($data['email'], $data['password'], TRUE);
 					if (count($mongo_user) > 0) {
 						if(isset($mongo_user[0]['banned'])){
 							if ($mongo_user[0]['banned'] == 1) {
@@ -57,5 +57,14 @@ class Controller_User_Login extends Controller_Common_User {
 	}
 
 	public function action_success() {
+	}
+	public function action_social($type = '') {
+		Session::destroy();
+		switch ($type) {
+			case 'facebook' : Response::redirect('user/facebook');break;
+			case 'github' : Response::redirect('user/github');break;
+			case 'twitter' : Response::redirect('user/twitter');break;
+			default: Response::redirect('user/profile');break;
+		}
 	}
 }

@@ -6,9 +6,9 @@ class Model_User_User {
 	/*
 	 * return Array()
 	 */
-	public static function checkUserExists($username = '', $password = '', $checkpass = FALSE){
+	public static function checkUserExists($email = '', $password = '', $checkpass = FALSE){
 		$condition = array();
-		$condition['username'] = $username;
+		$condition['email'] = $email;
 		if ($checkpass == TRUE) {
 			$condition['password'] = Crypt::encode($password);
 			//$flag_social = Config::get('flag_social');
@@ -28,27 +28,31 @@ class Model_User_User {
 			return FALSE;
 		}
 
-		if (!isset($data['username']) && !isset($data['password'])) {
+		if (!isset($data['email']) && !isset($data['name']) && !isset($data['password'])) {
 			return FALSE;
 		}
 
-		if (empty($data['username']) && empty($data['password'])) {
+		if (empty($data['email']) && empty($data['name']) && empty($data['password'])) {
 			return FALSE;
 		}
 
-		if (count(self::checkUserExists($data['username'])) > 0) {
+		if (count(self::checkUserExists($data['email'])) > 0) {
 			return FALSE;
 		}
 		$mongodb = Mongo_Db::instance();
 		$time = time();
 		$flag_social = Config::get('flag_social');
 		$id = $mongodb->insert('user', array(
-				'username' => $data['username'],
-				'email' => '',
-				'flag' => $flag_social['none'],
-				'id' => '',
-				'name' => '',
-				'token' => '',
+				//'username' => $data['username'],
+				'email' => $data['email'],
+				//'flag' => $flag_social['none'],
+				'id_facebook' => '',
+				'token_facebook' => '',
+				'id_github' => '',
+				'token_github' => '',
+				'id_twitter' => '',
+				'token_twitter' => '',
+				'name' => $data['name'],
 				'password' => Crypt::encode($data['password']),
 				'created_at' => $time,
 				'updated_at' => $time,
@@ -118,6 +122,24 @@ class Model_User_User {
 		}
 		return $id;
 	}
+
+	/*
+	 * return Boolean
+	*/
+	public static function updateUserSocial($id = 0, $data = array()) {
+		if (empty($data)  && empty($id)){
+			return FALSE;
+		}
+
+		$mongodb = Mongo_Db::instance();
+		$time = time();
+		$id = $mongodb->where(array('_id' => $id))->update('user', $data);
+		if ($id == false) {
+			return FALSE;
+		}
+		return TRUE;
+	}
+
 	/*
 	 * return array
 	 */

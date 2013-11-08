@@ -6,10 +6,17 @@ use Fuel\Core\Form;
 <table style="text-align: left;">
 	<tbody>
 		<tr>
-			<td>Username : </td>
+			<td>Email : </td>
 			<td>
-				<?php echo Form::input('username', $username, array('id' => 'username'));?><br />
-				<font color="red"><?php echo (isset($error) && isset($error['username']))?$error['username']:'';?></font>
+				<?php echo Form::input('email', $email, array('id' => 'email'));?><br />
+				<font color="red"><?php echo (isset($error) && isset($error['email']))?$error['email']:'';?></font>
+			</td>
+		</tr>
+		<tr>
+			<td>Name : </td>
+			<td>
+				<?php echo Form::input('name', $name, array('id' => 'name'));?><br />
+				<font color="red"><?php echo (isset($error) && isset($error['name']))?$error['name']:'';?></font>
 			</td>
 		</tr>
 		<tr>

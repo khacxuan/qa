@@ -11,18 +11,22 @@ use Fuel\Core\Config;
 				error.appendTo( element.siblings("font") );
 			},
 			rules: {
-				username: {
+				email: {
 					required: true,
+					email: true,
 					remote: {
 						url: '<?php echo Uri::create('ajax/user/checkExist'); ?>',
 						type: 'post',
 						data: {
-							username: function() {
-								username = $('#username').val();
-								return $( '#username' ).val();
+							email: function() {
+								email = $('#email').val();
+								return $( '#email' ).val();
 							}
 						}
 					},
+				},
+				name: {
+					required: true
 				},
 				password: {
 					required: true,

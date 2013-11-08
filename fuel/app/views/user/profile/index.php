@@ -7,7 +7,7 @@ use Fuel\Core\Form;
 <br />
 <?php echo (isset($msg))?$msg:'';?>
 <?php echo Form::open(array('action' => 'user/profile/index', 'method' => 'post', 'id' => 'profile'));?>
-<table style="text-align: left;">
+<table style="text-align: left;" border="1">
 	<tbody>
 		<tr>
 			<td>Name : </td>
@@ -43,6 +43,31 @@ use Fuel\Core\Form;
 			</td>
 		</tr>
 		<tr>
+			<td>Registered Socials</td><td>
+				<?php if (isset($social) && isset($social['registered']) && count($social['registered']) > 0) : ?>
+					<?php foreach ($social['registered'] as $kr=>$vr) : ?>
+						<div>
+							<img alt="<?php echo $kr;?>" src="<?php echo Uri::base()?>assets/img/icon_<?php echo $kr;?>.png" />
+							<a href="javascript:void(0);" onclick="deletesocial('<?php echo $kr;?>'); return false;">Delete</a>
+						</div>
+					<?php endforeach;?>
+				<?php else:?>
+					<div><?php echo Config::get('qa_no_data');?></div>
+				<?php endif;?>
+			</td>
+		</tr>
+		<tr>
+			<td>Unregistered Socials</td><td>
+				<?php if (isset($social)) : ?>
+					<?php foreach ($social['unregistered'] as $ku=>$vu) : ?>
+						<div>
+							<a href="<?php echo Uri::create('user/profile/social/'.$ku);?>"><img alt="<?php echo $ku;?>" src="<?php echo Uri::base()?>assets/img/icon_<?php echo $ku;?>.png" /></a>
+						</div>
+					<?php endforeach;?>
+				<?php endif;?>
+			</td>
+		</tr>
+		<tr>
 			<td></td>
 			<td>
 				<?php echo Form::input('confirm','confirm', array('type' => 'submit'));?>
@@ -51,3 +76,35 @@ use Fuel\Core\Form;
 	</tbody>
 </table>
 <?php echo Form::close();?>
+<!-- Stat modal -->
+<div id="deleteConfirmModal" class="modal modal-small form hide fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h4>削除の確認</h4>
+	</div>
+	<div class="modal-body">
+		<div class="form-horizontal">
+			<div class="control-group">
+				<?php echo Config::get('msg_confirm_delete'); ?>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-main" data-dismiss="modal" aria-hidden="true">キャンセル</button>
+		<button id="btnOK" class="btn btn-sub">削除する</button>
+	</div>
+</div>
+<!-- End Stat modal -->
+<script>
+
+function deletesocial(type){
+	$('#deleteConfirmModal').modal('show');
+	$('#btnOK').unbind('click');
+	$('#btnOK').click(function(){
+		$('#deleteConfirmModal').modal('hide');
+		window.location = '<?php echo Uri::create('user/profile/deletesocial/');?>'+type;
+	});
+	return false;
+};
+
+</script>

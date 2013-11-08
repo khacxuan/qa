@@ -5,6 +5,19 @@ class Controller_User_Profile extends Controller_Common_User {
 
 	public function action_index() {
 		$data = array();
+		/*Check error to social*/
+		$error = Input::get('error', null);
+		if ($error == 1) {
+			$typesocial = Input::get('type', '');
+			$mes = Config::get('msg_err_social');
+			$data['msg'] = str_replace(':social', $typesocial, $mes);
+		}
+		elseif($error == 2) {
+			$data['msg'] = Config::get('msg_err_delete');
+		}
+		/*End check*/
+
+
 		$data['id'] = $this -> user_id['_id'];
 		/*Check user existed*/
 		$check = Model_User_User::is_exist(array('_id' => $data['id']));
@@ -13,6 +26,17 @@ class Controller_User_Profile extends Controller_Common_User {
 		}
 		$data['name'] = Input::post('name', (isset($check[0]['name'])?$check[0]['name']:''));
 		$data['email'] = Input::post('email', (isset($check[0]['email'])?$check[0]['email']:''));
+		$data['social']['registered'] = array();
+		$data['social']['unregistered'] = array();
+		$arr_social = array('facebook', 'twitter', 'github');
+		foreach ($arr_social as $v) {
+			if (isset($check[0]['id_'.$v]) && $check[0]['id_'.$v] != '') {
+				$data['social']['registered'][$v] = '';
+			}
+			else {
+				$data['social']['unregistered'][$v] = '';
+			}
+		}
 		$tags = '';
 		if (isset($check[0]['tag_ids']) && count($check[0]['tag_ids']) > 0) {
 			$arr_tag_name = Model_User_User::getTags($check[0]['tag_ids']);
@@ -61,4 +85,33 @@ class Controller_User_Profile extends Controller_Common_User {
 		$this->template->content = View::forge('user/profile/index', $data);
 	}
 
+	public function action_social($type = '') {
+		Session::set('profilepage', 1);
+		Session::delete('oauth_token');
+		Session::delete('oauth_token_secret');
+		Session::delete('oauth_verify');
+		Session::delete('oauth_token');
+		switch ($type) {
+			case 'facebook' : Response::redirect('user/facebook');break;
+			case 'github' : Response::redirect('user/github');break;
+			case 'twitter' : Response::redirect('user/twitter');break;
+			default: Response::redirect('user/profile');break;
+		}
+	}
+
+	public function action_deletesocial($type = '') {
+		$arr_social = array('facebook', 'twitter', 'github');
+		if (in_array($type, $arr_social)) {
+			$data['id_'.$type] = '';
+			$data['token_'.$type] = '';
+			$check = Model_User_User::updateUserSocial($this -> user_id['_id'], $data);
+			if ($check == FALSE) {
+				Response::redirect('user/profile?error=2');
+			}
+			Response::redirect('user/profile');
+		}
+		else {
+			Response::redirect('user/profile?error=2');
+		}
+	}
 }

@@ -4,9 +4,9 @@ use Fuel\Core\Input;
 class Controller_Ajax_User extends Controller {
 	public function action_checkExist() {
 		if (Input::method() == 'POST') {
-			$username = Input::post('username', '');
-			if (!empty($username)) {
-				$result = Model_User_User::checkUserExists($username);
+			$email = Input::post('email', '');
+			if (!empty($email)) {
+				$result = Model_User_User::checkUserExists($email);
 				if (count($result) > 0) {
 					return json_encode(false);
 				}
@@ -124,7 +124,7 @@ class Controller_Ajax_User extends Controller {
 		}
 		return json_encode($data);
 	}
-	
+
 	public function action_sendmail() {
 		try {
 			if (Input::method() == 'POST') {
@@ -141,7 +141,7 @@ class Controller_Ajax_User extends Controller {
 			Log::error($e->getTraceAsString());
 		}
 	}
-	
+
 	public function action_set_better() {
 		try {
 			if (Input::method() == 'POST') {
@@ -165,6 +165,6 @@ class Controller_Ajax_User extends Controller {
 		}
 		return json_encode($data);
 	}
-	
-	
+
+
 }
