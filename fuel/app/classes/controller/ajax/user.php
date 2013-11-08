@@ -155,7 +155,7 @@ class Controller_Ajax_User extends Controller {
 				if(!isset($index)){
 					$index = '-1';
 				}
-				$flag = Model_User_Detail::set_better($question_id, $user['_id'], $index, $comment);
+				$flag = Model_User_Detail::set_better($question_id, $user['_id'], $index, trim($comment));
 				$data['err_msg'] = '';
 				$data['success'] = $flag;
 			}

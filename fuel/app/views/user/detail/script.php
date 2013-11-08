@@ -133,18 +133,23 @@
 								var v = $("[name=counter_" + by[2] + "]").first().text(); 
 								if(v == "" || v == null){
 									v = 0;
+								}else{
+									v = parseInt(v);
 								}
-								$("[name=counter_" + by[2] + "]").text(++v);
+								if($("[id^=ureply_]").length <= 0){
+									v = v + 1;
+								}
+								$("[name=counter_" + by[2] + "]").text(v);
 								$("button[name^=btn_better_]").remove();
 								var c = '<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />';
-								if(comment == ""){
+								if($.trim(comment) == ""){
 									c += '<a href="javascript:void(0)" id="ureply_' + index + '" name="btn_ureply_' + by[2]+ '">Reply</a>';
 								}
 								$("#better_img_" + index).html(c);
 								$('#div_reply_' + index).hide();
 								$('#div_reply_' + index).html(comment);
 								$('#div_reply_' + index).fadeIn("slow");
-								if(comment == ""){
+								if($.trim(comment) == ""){
 									$( "#ureply_" + index).bind( "click", function(){ set_better(this) });
 								}
 							}
