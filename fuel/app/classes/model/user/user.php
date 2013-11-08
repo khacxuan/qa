@@ -145,7 +145,7 @@ class Model_User_User {
 	 */
 	public static function getAllUser($id, $limit = 0, $start = 0){
 		$mongodb = Mongo_Db::instance();
-		$mongodb->select(array('username'));
+		$mongodb->select(array('name'));
 		$mongodb->where_ne('_id' ,$id);
 		if (0 != $limit) {
 			$mongodb->limit($limit)->offset($start);
@@ -162,7 +162,7 @@ class Model_User_User {
 			return array();
 		}
 		$mongodb = Mongo_Db::instance();
-		$mongodb->select(array('username'));
+		$mongodb->select(array('email'));
 		$mongodb->where(array('_id' => new MongoId($id)));
 		$users = $mongodb->get_one('user');
 		return $users;

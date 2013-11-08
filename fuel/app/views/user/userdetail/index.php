@@ -12,8 +12,8 @@ use Fuel\Core\Uri;
 <h3>Total :</h3>
 <table>
 	<tr>
-		<td>Username:</td>
-		<td><?php echo $userdetail['username'];?></td>
+		<td>Email:</td>
+		<td><?php echo $userdetail['email'];?></td>
 	</tr>
 	<tr>
 		<td>Question Numbers:</td>
@@ -25,7 +25,7 @@ use Fuel\Core\Uri;
 	</tr>
 	<tr>
 		<td>Tag Numbers:</td>
-		<td><?php echo (isset($tags))?count($tags):0;?></td>
+		<td><?php echo (isset($tags))?$tags:0;?></td>
 	</tr>
 </table>
 <br />

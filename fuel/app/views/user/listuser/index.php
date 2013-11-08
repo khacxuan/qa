@@ -2,7 +2,7 @@
 	<?php if ($num > 0) : ?>
 	<ul class="news-horizontal">
 		<?php foreach ($list as $v) : ?>
-			<li><a href="<?php echo Uri::create('user/userdetail/index/'.(string)$v['_id']); ?>"><?php echo $v['name'];?></a></li>
+			<li><a href="<?php echo Uri::create('user/userdetail/index/'.(string)$v['_id']); ?>"><?php echo (empty($v['name']))?'Nodata':$v['name'];?></a></li>
 		<?php endforeach; ?>
 	</ul>
 	<div class="pagination-holder">
