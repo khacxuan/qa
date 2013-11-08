@@ -20,6 +20,23 @@ class Model_User_User {
 		return $users;
 	}
 
+	public static function checkEmailExists($email = '', $id = null){
+
+		$condition = array();
+		$condition['email'] = $email;
+
+		$mongodb = Mongo_Db::instance();
+		$mongodb->where($condition);
+		$users = $mongodb->get('user');
+		if (count($users) > 0) {
+			if ((string)$users[0]['_id'] == (string)$id) {
+				return TRUE;
+			}
+		}
+
+		return $users;
+	}
+
 	/*
 	 * return Boolean
 	*/

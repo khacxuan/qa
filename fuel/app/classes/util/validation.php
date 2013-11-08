@@ -198,6 +198,25 @@ class Util_Validation {
 		return !(count($result) > 0);
 	}
 
+	/**
+	 *
+	 */
+	public static function _validation_uniqueemail($val) {
+		//get login session
+		$user = Session::get(SESSION_QA_USER, null);
+		if ($user == null) {//not login
+			Validation::active()->set_message('unique', \Config::get('myvalidation_unique'));
+			return FALSE;
+		}
+		$result = Model_User_User::checkEmailExists($val, $user['_id']);
+		if ($result === TRUE) {
+			return TRUE;
+		}
+		Validation::active()->set_message('unique', \Config::get('myvalidation_unique'));
+
+		return !(count($result) > 0);
+	}
+
 	public static function _validation_exist($val, $options) {
 		list($table, $field) = explode('.', $options);
 

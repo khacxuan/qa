@@ -38,7 +38,17 @@ use Fuel\Core\Config;
 				},
 				email: {
 					required: true,
-					email: true
+					email: true,
+					remote: {
+						url: '<?php echo Uri::create('ajax/user/checkExistEmail'); ?>',
+						type: 'post',
+						data: {
+							email: function() {
+								email = $('#email').val();
+								return $( '#email' ).val();
+							}
+						}
+					},
 				},
 				password: {
 					minlength: 6
@@ -48,6 +58,9 @@ use Fuel\Core\Config;
 				},
 			},
 			messages: {
+				email: {
+					remote: messageRemote
+				},
 				confirmpassword: {
 					equalTo: jQuery.format('<?php echo Config::get('jsmyvalidation_match');?>', 'Password', 'Confirm Password'),
 				},

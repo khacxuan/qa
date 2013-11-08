@@ -61,8 +61,8 @@ class Controller_User_Profile extends Controller_Common_User {
 			if ($confirm != '') {
 				$val = Validation::forge();
 				$val->add_callable('Util_Validation');
-				$val->add_field('name', 'Name', 'required|trim|unique');
-				$val->add_field('email', 'Email', 'required|trim|unique');
+				$val->add_field('name', 'Name', 'required|trim');
+				$val->add_field('email', 'Email', 'required|trim|uniqueemail');
 				$val->add_field('password', 'Password', 'trim|min_length[6]');
 				$val->add_field('confirmpassword', 'Confirm Password', 'trim|min_length[6]|match_field[password]');
 				if ($val->run()) {

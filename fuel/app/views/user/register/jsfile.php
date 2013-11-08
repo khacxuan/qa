@@ -37,7 +37,7 @@ use Fuel\Core\Config;
 				},
 			},
 			messages: {
-				username: {
+				email: {
 					remote: messageRemote
 				},
 				confirmpassword: {

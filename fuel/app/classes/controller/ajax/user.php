@@ -14,7 +14,26 @@ class Controller_Ajax_User extends Controller {
 		}
 		return json_encode(true);
 	}
-
+	public function action_checkExistEmail() {
+		if (Input::method() == 'POST') {
+			$email = Input::post('email', '');
+			if (!empty($email)) {
+				$user = Session::get(SESSION_QA_USER);
+				$id = $user['_id'];
+				$result = Model_User_User::checkEmailExists($email, $id);
+				if ($result === FALSE) {
+					return json_encode(false);
+				}
+				if ($result === TRUE) {
+					return json_encode(true);
+				}
+				if (count($result) > 0) {
+					return json_encode(false);
+				}
+			}
+		}
+		return json_encode(true);
+	}
 	public function action_get_tags(){
 		$tags = Model_User_Question::getAllTags();
 		$ret = array();
@@ -87,7 +106,7 @@ class Controller_Ajax_User extends Controller {
 					$params['show_button'] = $show_button;
 					$params['count_better'] = $info['retval'][0]['count_better'];
 					$params['total_answer'] = $info['retval'][0]['total_answer'];
-					
+
 					$view = View::forge('user/detail/item', $params);
 					$list = $view->render();
 					$data['new_reply'] = $list;
