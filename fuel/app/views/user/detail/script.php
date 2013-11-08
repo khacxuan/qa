@@ -121,11 +121,12 @@
 				var by = this.name.split('_'); 
 				var index = -1;
 				var comment =CKEDITOR.instances.questioner_reply.document.getBody().getChild(0).getText();
+				var content = $("#questioner_reply").val();
 				
 				if(id[2] != null){
 					index = id[2]; 
 				}
-				$.post(url,{question_id: qid, index: index, comment: comment}, function(data) {                 					
+				$.post(url,{question_id: qid, index: index, comment: content}, function(data) {                 					
 					var response = JSON.parse(data);
 					if(response.hasOwnProperty('err_msg')){
 						if(0 == response.err_msg.length){
@@ -147,7 +148,7 @@
 								}
 								$("#better_img_" + index).html(c);
 								$('#div_reply_' + index).hide();
-								$('#div_reply_' + index).html(comment);
+								$('#div_reply_' + index).html(content);
 								$('#div_reply_' + index).fadeIn("slow");
 								if($.trim(comment) == ""){
 									$( "#ureply_" + index).bind( "click", function(){ set_better(this) });
