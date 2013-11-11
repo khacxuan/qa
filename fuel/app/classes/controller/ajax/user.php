@@ -102,7 +102,7 @@ class Controller_Ajax_User extends Controller {
 					if($info['retval'][0]['questioner'] != 0 && $better_flag != 1){
 						$show_button = true;
 					}
-					$params['reply'] = array_merge($reply,array("username" => $user['username']));
+					$params['reply'] = array_merge($reply,array("username" => $user['name']));
 					$params['show_button'] = $show_button;
 					$params['count_better'] = $info['retval'][0]['count_better'];
 					$params['total_answer'] = $info['retval'][0]['total_answer'];
