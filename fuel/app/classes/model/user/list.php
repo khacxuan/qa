@@ -36,7 +36,7 @@ class Model_User_List {
 	}
 
 	public static function getAllListQuestoinsByCon($key = "", $answer = -1, $limit, $offset) {
-
+	
 		if ($key != "") {
 			$key = preg_quote($key);
 			$key = str_replace(" ", "|", $key);
@@ -89,7 +89,8 @@ class Model_User_List {
 		$id_user = 'ObjectId("'.$id_user.'")';
 		$follow_array = Model_User_List::getFollow($id_user);
 		if(empty($follow_array)){
-			return Model_User_List::getAllListQuestoinsByCon($key = "", $answer = -1, $limit, $offset);
+			
+			return Model_User_List::getAllListQuestoinsByCon($key,$answer , $limit, $offset);
 		}		
 		$array_tmp;
 		foreach ($follow_array as $val) {
