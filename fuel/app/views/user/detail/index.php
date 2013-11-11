@@ -1,9 +1,5 @@
 <div class="question">
-	<?php 
-		$question = $replies['retval'][0]['question'];
-		$bookmark = $replies['retval'][0]['bookmark'];
-		if(count($question) > 0){ 
-	?>
+	<?php if(count($question) > 0): ?>
 	<div class="left">
 		<img src="<?php echo Uri::create("assets/img/s_1314188084.jpg") ?>" alt=""/><br />
 		<span><a href="javascript:void(0)"><?php echo $question['username'] ?></a></span>
@@ -12,10 +8,7 @@
 		<h3><?php echo $question['question_title'] ?></h3>
 		<div><?php echo $question['question_content'] ?></div>
 		<div class="tag">
-			<?php 
-				$tags = $replies['retval'][0]['tag'];
-				foreach ($tags as $item) {
-			?>
+			<?php foreach ($tags as $item) { ?>
 			<a href="javascript:void(0)"><?php echo $item['name'] ?></a>
 			<?php } ?>
 		</div>
@@ -27,15 +20,12 @@
 	<div class="clear"></div>
 	<input type="hidden" id="qid" value="<?php echo $question['_id'] ?>" />
 	<input type="hidden" id="email" value="<?php echo (isset($question['send_email']) && $question['send_email'] ==1 ? $question['email'] : '') ?>" />
-	<?php } ?>
+	<?php endif ?>
 </div>
 <div class="line"></div>
 <div class="answer" id="list-answer">
 	<?php 
-		$reply = $replies['retval'][0]['replies'];
-		$better_flag = $replies['retval'][0]['better_flag'];
 		$i = 0;
-		$questioner_reply = "";
 		foreach ($reply as $item) {
 	?>
 	<div>
@@ -52,7 +42,7 @@
 				<?php } ?>
 				Date reply: <?php echo date('Y-m-d',$item['date']); ?>
 				<span id="<?php echo 'better_img_'.$i ?>">
-					<?php if($item['better_flag'] == 1) { $questioner_reply = $item['questioner_reply']; ?>
+					<?php if($item['better_flag'] == 1) {  ?>
 						<img src="<?php echo Uri::create('assets/img/check.png') ?>" alt="" />
 						<?php if($item['questioner_reply'] ==""){  ?>
 							<a href="javascript:void(0)" id="<?php echo 'ureply_'.$i ?>" name="<?php echo 'btn_ureply_'.$item['by'] ?>">Reply</a>

@@ -28,6 +28,7 @@ class Model_User_Detail {
 					var better_flag = "";
 					var questioner_reply = "";
 					if(w.answers){
+						
 						w.answers.forEach(function(item){
 							var username = db.user.find(
 														{_id: item.by},
