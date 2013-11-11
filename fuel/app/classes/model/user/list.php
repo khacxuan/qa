@@ -88,6 +88,7 @@ class Model_User_List {
 		
 		$id_user = 'ObjectId("'.$id_user.'")';
 		$follow_array = Model_User_List::getFollow($id_user);
+		
 		if(empty($follow_array)){
 			
 			return Model_User_List::getAllListQuestoinsByCon($key,$answer , $limit, $offset);
@@ -98,7 +99,7 @@ class Model_User_List {
 			$array_tmp[] = $temp;
 		}
 		$follow_array = "[" . implode(',', $array_tmp) . "]";
-
+		
 		if ($key != "") {
 			$key = preg_quote($key);
 			$key = str_replace(" ", "|", $key);
