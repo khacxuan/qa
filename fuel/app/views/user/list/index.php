@@ -29,6 +29,10 @@
 			</tbody></table>
 	</div>
 </form>
+<br/>
+<a href="<?php echo Uri::base().'user/list'.$url_follow; ?>">Sort By Follow</a>
+<br/>
+<br/>
 <!-- END search form -->
 <a href="<?php echo Uri::create('user/newqa') ?>">質問を追加</a>
 <?php if ($data['ok'] == 1 && !empty($data['retval'])) { ?>
