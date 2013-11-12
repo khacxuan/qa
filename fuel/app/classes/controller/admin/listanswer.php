@@ -1,8 +1,8 @@
 <?php
-class Controller_Admin_List extends Controller_Common_Admin {
+class Controller_Admin_Listanswer extends Controller_Common_Admin {
 
 	public function action_index() {
-		$view = View::forge('admin/list/index');
+		$view = View::forge('admin/list/answer');
 		$key = trim(Input::get('key')," 　\t\n\r\0\x0B");
 		$answer = trim(Input::get('answer', -1)," 　\t\n\r\0\x0B");
 		$data =  Model_Admin_List::getAllListQuestions($key,$answer);				
@@ -35,12 +35,12 @@ class Controller_Admin_List extends Controller_Common_Admin {
 		$view->students_count = $Total;
 		$view->data = $data;		
 		$this->template->js_file = array('jquery-ui-1.10.0.custom.min.js');		
-		$this -> template -> content = $view;		
+		$this -> template -> content = $view;			
 	}
-
-	public function action_delete($id) {
-		//(is_null ( $id ) or ! is_numeric ( $id )) and Response::redirect ( 'admin/list' );
 	
+	public function action_delete($id){
+		//(is_null ( $id ) or ! is_numeric ( $id )) and Response::redirect ( 'admin/list' );
+		
 		$page_index = Input::get ( 'page', 1 );
 		$page_index = ! is_numeric ( $page_index ) ? 1 : $page_index;
 		$key = Input::get ('key', null);
@@ -52,15 +52,41 @@ class Controller_Admin_List extends Controller_Common_Admin {
 			$qaid = $ids[2];
 			Model_Admin_List::delete($qaby, $qaid);			
 		}
+		
 		// Filter
 		$url_param = "";
 		if (isset ( $key ) and trim ( $key ) != '')
 			$url_param .= $url_param == "" ? "?key=" . $key : "&key=" . $key;
-	
+			
 		$url_param .= $url_param == "" ? "?answer=" . $answer : "&answer=" . $answer;
 		$url_param .= $url_param == "" ? "?page=" . $page_index : "&page=" . $page_index;
+		Response::redirect ( 'admin/listanswer' . $url_param );
+	}
 	
-		Response::redirect ( 'admin/list' . $url_param );
+	public function action_delete_answer($id) {
+		//(is_null ( $id ) or ! is_numeric ( $id )) and Response::redirect ( 'admin/list' );
+	
+		$page_index = Input::get ( 'page', 1 );
+		$page_index = ! is_numeric ( $page_index ) ? 1 : $page_index;
+		$key = Input::get ('key', null);
+		$answer = Input::get ('answer', -1);
+		//delete
+		$ids = explode('_', $id);
+		if(count($ids) == 4){
+			$qaby = $ids[1];
+			$qaid = $ids[2];
+			$num = $ids[3];
+			Model_Admin_List::deleteAnswer($qaby, $qaid, $num);			
+		}
+		
+		// Filter
+		$url_param = "";
+		if (isset ( $key ) and trim ( $key ) != '')
+			$url_param .= $url_param == "" ? "?key=" . $key : "&key=" . $key;
+		
+		$url_param .= $url_param == "" ? "?answer=" . $answer : "&answer=" . $answer;
+		$url_param .= $url_param == "" ? "?page=" . $page_index : "&page=" . $page_index;
+		Response::redirect ( 'admin/listanswer' . $url_param );
 	}
 }
 

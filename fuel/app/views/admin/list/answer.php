@@ -1,6 +1,6 @@
-<h2>List</h2>
+<h2>Answer List</h2>
 <!-- search form -->
-<form action="<?php echo uri::base() . 'admin/list' ?>" method="get">
+<form action="<?php echo uri::base() . 'admin/listanswer' ?>" method="get">
 	<div class="search form">
 		<table class="table table-bordered">
 			<tbody>
@@ -35,16 +35,54 @@
 		<tbody><tr>
 				<th>Title</th>
 				<th>Content</th>
+				<th>Answer</th>
 				<th>Date</th>
 				<th>Action</th>
 			</tr>
 			<?php
-			$data = $data['retval'][0];			
+			$data1 = $data['retval'][1];
+			$data = $data['retval'][0];	
+
+			$users = array();
+			foreach ($data1 as $d){
+				if(!empty($d)){								
+					$users[$d['_id']->{'$id'}] = $d;
+				}
+			}
+
 			foreach ($data as $dt) {
 				?>
 				<tr>
 					<td><a href="<?php echo uri::base() . 'user/detail/' . $dt['qa']['_id']; ?>"><?php echo @$dt['qa']['question_title']; ?></a></td>
-					<td><?php echo @$dt['qa']['question_content']; ?></td>					
+					<td>
+						<?php echo @$dt['qa']['question_content']; ?>											
+					</td>
+					<td><?php if(isset($dt['qa']['answers']) && count($dt['qa']['answers']) > 0){
+							$answers = $dt['qa']['answers'];
+							$akeys = array_keys($answers);
+							$n = count($akeys);
+						?>						
+						<table border="1">
+							<tr>
+								<th>Answer's Name</th>
+								<th>Answer Content</th>
+								<th>Answer Date</th>
+								<th>Action</th>
+							</tr>
+							<?php for($i=0;$i<$n;$i++){?>
+							<tr>
+								<td><?php $name = @$users[$answers[$akeys[$i]]['by']->{'$id'}]['username'];
+									if(empty($name))
+										$name = @$users[$answers[$akeys[$i]]['by']->{'$id'}]['name'];
+									echo $name;
+								?></td>
+								<td><?php echo $answers[$akeys[$i]]['content'];?></td>
+								<td><?php echo ($answers[$akeys[$i]]['date'] != "") ? date('Y-m-d', $answers[$akeys[$i]]['date']) : ""; ?></td>
+								<td align="center"><a href="javascript:void(0)" class="icon" id="adelete_<?php echo $answers[$akeys[$i]]['by'].'_'.$dt['qa']['_id'].'_'.$akeys[$i]?>">x</a></td>
+							</tr>
+							<?php }?>
+						</table>
+						<?php }?></td>
 					<td><?php echo (@$dt['qa']['created_at'] != "") ? date('Y-m-d', @$dt['qa']['created_at']) : ""; ?></td>
 					<td align="center"><a href="javascript:void(0)" class="icon" id="qadelete_<?php echo $dt['qa']['questioner'].'_'.$dt['qa']['_id']?>">x</a></td>
 				</tr>
@@ -70,10 +108,17 @@
 	$(document).ready(function() {
 		var url_param = '<?php echo isset($url_param) ? $url_param : "?page=" ?>';
 		var page_index = <?php echo isset($page_index) ? $page_index : 0 ?>;
+
+		$('a[id^="adelete_"]').click(function() {
+		    if(confirm('<?php echo Config::get('qa_confirm_delete') ?>')){
+		    	window.location = "<?php echo uri::create('admin/listanswer/delete_answer/') ?>" + this.id + url_param + page_index;
+			    return false;
+		    }
+		});
 		
 		$('a[id^="qadelete_"]').click(function() {		    
 		    if(confirm('<?php echo Config::get('qa_confirm_delete') ?>')){
-		    	window.location = "<?php echo uri::create('admin/list/delete/') ?>" + this.id + url_param + page_index;
+		    	window.location = "<?php echo uri::create('admin/listanswer/delete/') ?>" + this.id + url_param + page_index;
 			    return false;
 		    }
 		});

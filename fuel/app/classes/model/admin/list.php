@@ -32,10 +32,7 @@ class Model_Admin_List {
 				 return db.qa.find(' . $con .').toArray()	
 			}');	
 		
-		return $result;
-		
-		
-		
+		return $result;	
 	}
 	
 
@@ -66,7 +63,7 @@ class Model_Admin_List {
 
 		$mdb = Mongo_DB::instance();		
 		$result = $mdb->execute('function (){
-				var a = [];		
+				var a = [], users=[], uids = [];		
 				db.qa.find(' . $con .').skip(' . $offset . ').limit(' . $limit . ').sort( { created_at: -1 } ).forEach(function(w){
 					var b = [];
 					if(w.tag_ids){
@@ -76,16 +73,58 @@ class Model_Admin_List {
 						qa:w,
 						tag:b
 					});
+				
+					if(w.answers){
+						n = w.answers.length;
+						for(i=0;i<n;i++){
+							uid = w.answers[i]["by"];
+							struid = uid.toString();
+							if(uids.indexOf(struid) < 0){
+								uids.push(struid);
+								users.push(db.user.findOne({_id:uid},{email: 1, name: 1, username: 1}));
+							}
+						}
+					}
 				});
-				return a;
+				return [a,users];
 			}');	
 		
 		return $result;
 	}
 	
-	public static function delete($id){
+	public static function delete($qaby, $qaid){
 		$mdb = Mongo_DB::instance();
-		$ret = $mdb->where(array('_id'=>new MongoId($id)))->delete('qa');
+		$ret = $mdb->where(array('_id'=>new MongoId($qaid)))->delete('qa');
+		
+		$ret = $mdb->where(array('_id'=>new MongoId($qaby)))->get_one('user');
+		if(empty($ret['number_of_deleted_questions'])){
+			$mdb->where(array('_id'=>new MongoId($qaby)))->update('user', array('number_of_deleted_questions'=>1));
+		}else{
+			$count = $ret['number_of_deleted_questions'] + 1;
+			$mdb->where(array('_id'=>new MongoId($qaby)))->update('user', array('number_of_deleted_questions'=>$count));
+		}
+	}
+	
+	public static function deleteAnswer($qaby, $qaid, $num){
+		$mdb = Mongo_DB::instance();
+		$ret = $mdb->where(array('_id'=>new MongoId($qaid)))->get_one('qa');
+		$ret = $ret['answers'];
+		unset($ret[$num]);
+		
+		$reindex = array();
+		foreach ($ret as $item){
+			$reindex[] = $item;
+		}
+		
+		$mdb->where(array('_id'=>new MongoId($qaid)))->update('qa', array('answers'=>$reindex));
+		
+		$ret = $mdb->where(array('_id'=>new MongoId($qaby)))->get_one('user');
+		if(empty($ret['number_of_deleted_answers'])){
+			$mdb->where(array('_id'=>new MongoId($qaby)))->update('user', array('number_of_deleted_answers'=>1));
+		}else{
+			$count = $ret['number_of_deleted_answers'] + 1;
+			$mdb->where(array('_id'=>new MongoId($qaby)))->update('user', array('number_of_deleted_answers'=>$count));
+		}
 	}
 }
 ?>
