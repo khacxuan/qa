@@ -13,7 +13,7 @@ use Fuel\Core\Uri;
 <table>
 	<tr>
 		<td>Name:</td>
-		<td><?php echo (empty($v['name']))?'Nodata':$v['name'];?></td>
+		<td><?php echo (empty($userdetail['name']))?'Nodata':$userdetail['name'];?></td>
 	</tr>
 	<tr>
 		<td>Email:</td>

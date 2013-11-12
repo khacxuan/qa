@@ -9,12 +9,13 @@ class Model_User_User {
 	public static function checkUserExists($email = '', $password = '', $checkpass = FALSE){
 		$condition = array();
 		$condition['email'] = $email;
+		$mongodb = Mongo_Db::instance();
 		if ($checkpass == TRUE) {
 			$condition['password'] = Crypt::encode($password);
+			$mongodb->select(array('email', 'name'));
 			//$flag_social = Config::get('flag_social');
 			//$condition['flag'] = $flag_social['none'];
 		}
-		$mongodb = Mongo_Db::instance();
 		$mongodb->where($condition);
 		$users = $mongodb->get('user');
 		return $users;
@@ -179,7 +180,7 @@ class Model_User_User {
 			return array();
 		}
 		$mongodb = Mongo_Db::instance();
-		$mongodb->select(array('email'));
+		$mongodb->select(array('email', 'name'));
 		$mongodb->where(array('_id' => new MongoId($id)));
 		$users = $mongodb->get_one('user');
 		return $users;
