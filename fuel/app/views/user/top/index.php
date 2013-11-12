@@ -28,7 +28,7 @@
 	$na = count($fq['qa']);
 ?>
 <tr>
-	<td <?php if($na>0) echo "rowspan='$na'"?>><?php echo $fq['fid']['username']?></td>
+	<td <?php if($na>0) echo "rowspan='$na'"?>><?php echo @$fq['fid']['name']?></td>
 	<td><h1><?php echo $na>0?@$fq['qa'][0]['question_title']:''?></h1><br/><?php echo @$fq['qa'][0]['question_content']?></td>			
 </tr>
 <?php for($i=1;$i<$na;$i++){?>
