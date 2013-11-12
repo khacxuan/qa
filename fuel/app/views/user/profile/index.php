@@ -3,7 +3,7 @@ use Fuel\Core\Form;
 ?>
 <h2>Menu</h2>
 <a href="<?php echo Uri::create("user/followers") ?>">Followers</a><br /><br />
-<a href="<?php echo Uri::create("user/following") ?>">Following</a>
+<a href="<?php echo Uri::create("user/followings") ?>">Following</a>
 <br />
 <?php echo (isset($msg))?$msg:'';?>
 <?php echo Form::open(array('action' => 'user/profile', 'method' => 'post', 'id' => 'profile'));?>
