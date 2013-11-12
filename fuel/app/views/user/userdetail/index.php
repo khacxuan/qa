@@ -12,6 +12,10 @@ use Fuel\Core\Uri;
 <h3>Total :</h3>
 <table>
 	<tr>
+		<td>Name:</td>
+		<td><?php echo (empty($v['name']))?'Nodata':$v['name'];?></td>
+	</tr>
+	<tr>
 		<td>Email:</td>
 		<td><?php echo $userdetail['email'];?></td>
 	</tr>
