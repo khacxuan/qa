@@ -78,7 +78,7 @@ class Model_User_User {
 		if ($id == false) {
 			return FALSE;
 		}
-		return TRUE;
+		return $id;
 	}
 
 	/*

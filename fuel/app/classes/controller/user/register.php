@@ -25,8 +25,10 @@ class Controller_User_Register extends Controller_Common_User {
 				$val->add_field('confirmpassword', 'Confirm Password', 'required|trim|min_length[6]|match_field[password]');
 				if ($val->run()) {
 					$mongo_user = Model_User_User::insertUser($data);
-					if ($mongo_user == TRUE) {
-						Response::redirect('user/register/success');
+					if ($mongo_user !== FALSE) {
+						$users = Model_User_User::is_exist(array('_id' => $mongo_user), array('email', 'name'));
+						Session::set(SESSION_QA_USER, $users[0]);
+						Response::redirect('user/top');
 					}
 					else {
 						$data['err'] = Config::get('err_not_register');
