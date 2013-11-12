@@ -70,7 +70,7 @@ class Controller_User_Profile extends Controller_Common_User {
 					if ($mongo_user == TRUE) {
 						$data['msg'] = Config::get('msg_edit_sucess');
 						/*Update variable user_id*/
-						$check = Model_User_User::is_exist(array('_id' => $data['id']));
+						$check = Model_User_User::is_exist(array('_id' => $data['id']), array('email', 'name'));
 						Session::set(SESSION_QA_USER, $check[0]);
 					}
 					else {

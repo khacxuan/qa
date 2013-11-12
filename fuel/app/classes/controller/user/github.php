@@ -59,7 +59,7 @@ class Controller_User_Github extends Controller {
 			Response::redirect('user/list');
 		}
 		$flag_social = Config::get('flag_social');
-		$users = Model_User_User::is_exist(array('id_github' => ''.$userInfo->id));
+		$users = Model_User_User::is_exist(array('id_github' => ''.$userInfo->id), array('email', 'name', 'banned'));
 
 		if (empty($users) or count($users) <= 0) {
 
@@ -84,7 +84,7 @@ class Controller_User_Github extends Controller {
 			if ($user == FALSE) {
 				Response::redirect('user/login');
 			}
-			$users = Model_User_User::is_exist(array('_id' => $user));
+			$users = Model_User_User::is_exist(array('_id' => $user), array('email', 'name'));
 		}
 		else if(count($users) > 0 and isset($users[0]['banned'])){
 			if ($users[0]['banned'] == 1) {

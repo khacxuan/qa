@@ -63,7 +63,7 @@ class Controller_User_Facebook extends Controller {
 			Response::redirect('user/list');
 		}
 		$flag_social = Config::get('flag_social');
-		$users = Model_User_User::is_exist(array('id_facebook' => $userInfo['id']));
+		$users = Model_User_User::is_exist(array('id_facebook' => $userInfo['id']), array('email', 'name', 'banned'));
 
 		$access_token = $this -> _facebook -> getAccessToken();
 		//ユーザーが存在しない
@@ -96,7 +96,7 @@ class Controller_User_Facebook extends Controller {
 			if ($user == FALSE) {
 				Response::redirect('user/login');
 			}
-			$users = Model_User_User::is_exist(array('_id' => $user));
+			$users = Model_User_User::is_exist(array('_id' => $user), array('email', 'name'));
 		} else {
 			if(count($users) > 0 and isset($users[0]['banned'])){
 				if ($users[0]['banned'] == 1) {

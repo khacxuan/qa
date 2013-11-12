@@ -189,13 +189,18 @@ class Model_User_User {
 	/*
 	 * return Array()
 	*/
-	public static function is_exist($arr = ''){
+	public static function is_exist($arr = '', $select = array()){
 		$arr_re = array();
 		if ($arr == '') {
 			return $arr_re;
 		}
 		$mongodb = Mongo_Db::instance();
-		$mongodb->select();
+		if (empty($select)) {
+			$mongodb->select();
+		}
+		else {
+			$mongodb->select($select);
+		}
 		$mongodb->where($arr);
 		$users = $mongodb->get('user');
 		return $users;

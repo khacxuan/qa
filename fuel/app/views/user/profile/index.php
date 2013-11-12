@@ -6,7 +6,7 @@ use Fuel\Core\Form;
 <a href="<?php echo Uri::create("user/following") ?>">Following</a>
 <br />
 <?php echo (isset($msg))?$msg:'';?>
-<?php echo Form::open(array('action' => 'user/profile/index', 'method' => 'post', 'id' => 'profile'));?>
+<?php echo Form::open(array('action' => 'user/profile', 'method' => 'post', 'id' => 'profile'));?>
 <table style="text-align: left;" border="1">
 	<tbody>
 		<tr>
@@ -70,7 +70,8 @@ use Fuel\Core\Form;
 		<tr>
 			<td></td>
 			<td>
-				<?php echo Form::input('confirm','confirm', array('type' => 'submit'));?>
+				<?php echo Form::input('confirm','confirm', array('type' => 'hidden'));?>
+				<?php echo Form::input('updateuser','confirm', array('type' => 'submit'));?>
 			</td>
 		</tr>
 	</tbody>

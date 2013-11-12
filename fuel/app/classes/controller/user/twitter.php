@@ -72,7 +72,7 @@ class Controller_User_Twitter extends Controller {
 		}
 		$flag_social = Config::get('flag_social');
 
-		$users = Model_User_User::is_exist(array('id_twitter' => $userInfo->user_id));
+		$users = Model_User_User::is_exist(array('id_twitter' => $userInfo->user_id), array('email', 'name', 'banned'));
 		if (empty($users) or count($users) <= 0) {
 			$userT = $this -> _twitter -> account_verifyCredentials();
 			$time = time();
@@ -96,7 +96,7 @@ class Controller_User_Twitter extends Controller {
 			if ($user == FALSE) {
 				Response::redirect('user/login');
 			}
-			$users = Model_User_User::is_exist(array('_id' => $user));
+			$users = Model_User_User::is_exist(array('_id' => $user), array('email', 'name'));
 		}
 		else if(count($users) > 0 and isset($users[0]['banned'])){
 			if ($users[0]['banned'] == 1) {
